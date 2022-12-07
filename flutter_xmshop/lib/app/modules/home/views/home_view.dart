@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
 import '../../../tool/cachepagestatewrapper.dart';
 import '../../../customview/homeappbar.dart';
+import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
@@ -15,33 +16,7 @@ class HomeView extends GetView<HomeController> {
       child: Scaffold(
         body: Stack(
           children: [
-            Positioned(
-              top: -50,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: ListView.builder(
-                  // 绑定controller，监听滚动偏移量
-                  controller: controller.scrollController,
-                  shrinkWrap: true,
-                  itemCount: 30,
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return Container(
-                        width: ScreenAdpater.getScreenWidth(),
-                        height: ScreenAdpater.height(682),
-                        color: Colors.grey,
-                        child: Image.network(
-                          "https://www.itying.com/images/focus/focus02.png",
-                          fit: BoxFit.cover,
-                        ),
-                      );
-                    }
-                    return ListTile(
-                      title: Text("$index"),
-                    );
-                  }),
-            ),
+            _getBody(),
             Positioned(
                 left: 0,
                 right: 0,
@@ -54,4 +29,65 @@ class HomeView extends GetView<HomeController> {
       ),
     );
   }
+
+  //首页内容UI
+  Widget _getBody() {
+    return Positioned(
+      top: -50,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      child: ListView(
+        children: [
+          SizedBox(
+            width: ScreenAdpater.getScreenWidth(),
+            height: ScreenAdpater.height(682),
+            // 插件的使用
+            child: Obx(() => Swiper(
+                  pagination: const SwiperPagination(
+                      builder: SwiperPagination.rect,
+                      alignment: Alignment.bottomCenter),
+                  autoplay: true,
+                  loop: true,
+                  itemCount: controller.bannerDataList.length,
+                  itemBuilder: (context, index) {
+                    String picUrl =
+                        "https://xiaomi.itying.com/${controller.bannerDataList[index]["pic"]}";
+                    String newurl = picUrl.replaceAll("\\", "/");
+                    return Image.network(
+                      newurl,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                )),
+          )
+        ],
+      ),
+    );
+  }
 }
+
+/**
+ * 
+ * ListView.builder(
+          // 绑定controller，监听滚动偏移量
+          controller: controller.scrollController,
+          shrinkWrap: true,
+          itemCount: 30,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Container(
+                width: ScreenAdpater.getScreenWidth(),
+                height: ScreenAdpater.height(682),
+                color: Colors.grey,
+                child: Image.network(
+                  "https://www.itying.com/images/focus/focus02.png",
+                  fit: BoxFit.cover,
+                ),
+              );
+            }
+            return ListTile(
+              title: Text("$index"),
+            );
+          })
+ */
