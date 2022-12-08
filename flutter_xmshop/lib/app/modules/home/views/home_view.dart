@@ -95,30 +95,31 @@ class HomeView extends GetView<HomeController> {
       width: ScreenAdpater.getScreenWidth(),
       height: ScreenAdpater.height(500),
       child: Obx(() {
+        var c = controller.cateDataList.length ~/ 10;
         return Swiper(
           pagination: const SwiperPagination(
               alignment: Alignment.bottomCenter,
               builder: SwiperPagination.rect),
-          itemCount: controller.cateDataList.length ~/ 10, //页数
+          itemCount: c, //页数
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
               child: GridView.builder(
-                  itemCount: controller.cateDataList.length,
-                  scrollDirection: Axis.horizontal,
+                  itemCount: 10, //一页固定10个item
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: ScreenAdpater.width(4),
-                      crossAxisSpacing: ScreenAdpater.height(4)),
-                  itemBuilder: (context, index) {
-                    CateItemModel item = controller.cateDataList[index];
+                      crossAxisCount: 5,
+                      mainAxisSpacing: ScreenAdpater.width(20),
+                      crossAxisSpacing: ScreenAdpater.height(20)),
+                  itemBuilder: (context, i) {
+                    CateItemModel item =
+                        controller.cateDataList[index * 10 + i];
                     var url = item.pic!.replaceAll("\\", "/");
                     return Column(
                       children: [
                         Container(
                           alignment: Alignment.center,
-                          height: ScreenAdpater.height(140),
-                          width: ScreenAdpater.width(140),
+                          height: ScreenAdpater.height(120),
+                          width: ScreenAdpater.width(120),
                           child: Image.network(
                             "$host$url",
                             fit: BoxFit.cover,
