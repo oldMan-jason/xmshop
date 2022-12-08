@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_xmshop/app/modules/home/models/cate_model.dart';
 import 'package:flutter_xmshop/app/modules/home/models/focus_model.dart';
 import 'package:flutter_xmshop/app/tool/screenadapter.dart';
 import 'package:get/get.dart';
@@ -43,53 +44,8 @@ class HomeView extends GetView<HomeController> {
         controller: controller.scrollController,
         children: [
           _getBanner(),
-          SizedBox(
-            width: ScreenAdpater.getScreenWidth(),
-            height: ScreenAdpater.height(92),
-            child: Image.asset(
-              "assets/images/xiaomiBanner.png",
-              fit: BoxFit.cover,
-            ),
-          ),
-          SizedBox(
-            width: ScreenAdpater.getScreenWidth(),
-            height: ScreenAdpater.height(500),
-            child: Swiper(
-              pagination: const SwiperPagination(
-                  alignment: Alignment.bottomCenter,
-                  builder: SwiperPagination.rect),
-              itemCount: 2, //页数
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                  child: GridView.builder(
-                      itemCount: 10,
-                      scrollDirection: Axis.horizontal,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: ScreenAdpater.width(4),
-                          crossAxisSpacing: ScreenAdpater.height(4)),
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              height: ScreenAdpater.height(140),
-                              width: ScreenAdpater.width(140),
-                              child: Image.network(
-                                  "https://xiaomi.itying.com/public/upload/mAUPB472d5kAPc2CPxANLaMj.jpg"),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                              child: Text("手机"),
-                            )
-                          ],
-                        );
-                      }),
-                );
-              },
-            ),
-          )
+          _getads(),
+          _getCate(),
         ],
       ),
     );
@@ -118,6 +74,67 @@ class HomeView extends GetView<HomeController> {
               );
             },
           )),
+    );
+  }
+
+  // 广告
+  Widget _getads() {
+    return SizedBox(
+      width: ScreenAdpater.getScreenWidth(),
+      height: ScreenAdpater.height(92),
+      child: Image.asset(
+        "assets/images/xiaomiBanner.png",
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  // 分类
+  Widget _getCate() {
+    return SizedBox(
+      width: ScreenAdpater.getScreenWidth(),
+      height: ScreenAdpater.height(500),
+      child: Obx(() {
+        return Swiper(
+          pagination: const SwiperPagination(
+              alignment: Alignment.bottomCenter,
+              builder: SwiperPagination.rect),
+          itemCount: controller.cateDataList.length ~/ 10, //页数
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+              child: GridView.builder(
+                  itemCount: controller.cateDataList.length,
+                  scrollDirection: Axis.horizontal,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: ScreenAdpater.width(4),
+                      crossAxisSpacing: ScreenAdpater.height(4)),
+                  itemBuilder: (context, index) {
+                    CateItemModel item = controller.cateDataList[index];
+                    var url = item.pic!.replaceAll("\\", "/");
+                    return Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          height: ScreenAdpater.height(140),
+                          width: ScreenAdpater.width(140),
+                          child: Image.network(
+                            "$host$url",
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                          child: Text(item.title!),
+                        )
+                      ],
+                    );
+                  }),
+            );
+          },
+        );
+      }),
     );
   }
 }
