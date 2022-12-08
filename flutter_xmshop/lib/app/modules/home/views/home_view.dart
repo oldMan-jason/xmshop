@@ -106,21 +106,23 @@ class HomeView extends GetView<HomeController> {
           itemCount: c, //页数
           itemBuilder: (context, index) {
             return Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: 10, //一页固定10个item
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 5,
-                      mainAxisSpacing: ScreenAdpater.width(20),
-                      crossAxisSpacing: ScreenAdpater.height(20)),
+                      mainAxisSpacing: ScreenAdpater.width(5),
+                      crossAxisSpacing: ScreenAdpater.height(5)),
                   itemBuilder: (context, i) {
                     CateItemModel item =
                         controller.cateDataList[index * 10 + i];
                     var url = item.pic!.replaceAll("\\", "/");
                     return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
+                          color: Colors.white,
                           alignment: Alignment.center,
                           height: ScreenAdpater.height(120),
                           width: ScreenAdpater.width(120),
@@ -129,9 +131,13 @@ class HomeView extends GetView<HomeController> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        Padding(
+                        Container(
                           padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                          child: Text(item.title!),
+                          child: Text(
+                            item.title!,
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.grey),
+                          ),
                         )
                       ],
                     );
