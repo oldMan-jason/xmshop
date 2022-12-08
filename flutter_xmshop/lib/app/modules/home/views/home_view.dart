@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_xmshop/app/modules/home/models/focus_model.dart';
 import 'package:flutter_xmshop/app/tool/screenadapter.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
 import '../../../tool/cachepagestatewrapper.dart';
 import '../../../customview/homeappbar.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
+import '../../../macro/macro.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
@@ -38,6 +40,7 @@ class HomeView extends GetView<HomeController> {
       right: 0,
       bottom: 0,
       child: ListView(
+        controller: controller.scrollController,
         children: [
           SizedBox(
             width: ScreenAdpater.getScreenWidth(),
@@ -51,9 +54,9 @@ class HomeView extends GetView<HomeController> {
                   loop: true,
                   itemCount: controller.bannerDataList.length,
                   itemBuilder: (context, index) {
-                    String picUrl =
-                        "https://xiaomi.itying.com/${controller.bannerDataList[index]["pic"]}";
-                    String newurl = picUrl.replaceAll("\\", "/");
+                    FocusItemModel item = controller.bannerDataList[index];
+                    String url = "$host${item.pic}";
+                    String newurl = url.replaceAll("\\", "/");
                     return Image.network(
                       newurl,
                       fit: BoxFit.cover,
@@ -66,28 +69,3 @@ class HomeView extends GetView<HomeController> {
     );
   }
 }
-
-/**
- * 
- * ListView.builder(
-          // 绑定controller，监听滚动偏移量
-          controller: controller.scrollController,
-          shrinkWrap: true,
-          itemCount: 30,
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return Container(
-                width: ScreenAdpater.getScreenWidth(),
-                height: ScreenAdpater.height(682),
-                color: Colors.grey,
-                child: Image.network(
-                  "https://www.itying.com/images/focus/focus02.png",
-                  fit: BoxFit.cover,
-                ),
-              );
-            }
-            return ListTile(
-              title: Text("$index"),
-            );
-          })
- */
