@@ -42,30 +42,82 @@ class HomeView extends GetView<HomeController> {
       child: ListView(
         controller: controller.scrollController,
         children: [
+          _getBanner(),
           SizedBox(
             width: ScreenAdpater.getScreenWidth(),
-            height: ScreenAdpater.height(682),
-            // 插件的使用
-            child: Obx(() => Swiper(
-                  pagination: const SwiperPagination(
-                      builder: SwiperPagination.rect,
-                      alignment: Alignment.bottomCenter),
-                  autoplay: true,
-                  loop: true,
-                  itemCount: controller.bannerDataList.length,
-                  itemBuilder: (context, index) {
-                    FocusItemModel item = controller.bannerDataList[index];
-                    String url = "$host${item.pic}";
-                    String newurl = url.replaceAll("\\", "/");
-                    return Image.network(
-                      newurl,
-                      fit: BoxFit.cover,
-                    );
-                  },
-                )),
+            height: ScreenAdpater.height(92),
+            child: Image.asset(
+              "assets/images/xiaomiBanner.png",
+              fit: BoxFit.cover,
+            ),
+          ),
+          SizedBox(
+            width: ScreenAdpater.getScreenWidth(),
+            height: ScreenAdpater.height(500),
+            child: Swiper(
+              pagination: const SwiperPagination(
+                  alignment: Alignment.bottomCenter,
+                  builder: SwiperPagination.rect),
+              itemCount: 2, //页数
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  child: GridView.builder(
+                      itemCount: 10,
+                      scrollDirection: Axis.horizontal,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: ScreenAdpater.width(4),
+                          crossAxisSpacing: ScreenAdpater.height(4)),
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              height: ScreenAdpater.height(140),
+                              width: ScreenAdpater.width(140),
+                              child: Image.network(
+                                  "https://xiaomi.itying.com/public/upload/mAUPB472d5kAPc2CPxANLaMj.jpg"),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                              child: Text("手机"),
+                            )
+                          ],
+                        );
+                      }),
+                );
+              },
+            ),
           )
         ],
       ),
+    );
+  }
+
+  // Banner
+  Widget _getBanner() {
+    return SizedBox(
+      width: ScreenAdpater.getScreenWidth(),
+      height: ScreenAdpater.height(682),
+      // 插件的使用
+      child: Obx(() => Swiper(
+            pagination: const SwiperPagination(
+                builder: SwiperPagination.rect,
+                alignment: Alignment.bottomCenter),
+            autoplay: true,
+            loop: true,
+            itemCount: controller.bannerDataList.length,
+            itemBuilder: (context, index) {
+              FocusItemModel item = controller.bannerDataList[index];
+              String url = "$host${item.pic}";
+              String newurl = url.replaceAll("\\", "/");
+              return Image.network(
+                newurl,
+                fit: BoxFit.cover,
+              );
+            },
+          )),
     );
   }
 }
