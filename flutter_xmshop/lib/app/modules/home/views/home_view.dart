@@ -41,11 +41,14 @@ class HomeView extends GetView<HomeController> {
       right: 0,
       bottom: 0,
       child: ListView(
+        shrinkWrap: true,
         controller: controller.scrollController,
         children: [
           _getBanner(),
           _getads(),
           _getCate(),
+          _getRecommend(),
+          _hotSelling()
         ],
       ),
     );
@@ -105,6 +108,7 @@ class HomeView extends GetView<HomeController> {
             return Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
               child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: 10, //一页固定10个item
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 5,
@@ -136,6 +140,206 @@ class HomeView extends GetView<HomeController> {
           },
         );
       }),
+    );
+  }
+
+  // 推荐
+  Widget _getRecommend() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: ScreenAdpater.height(420),
+            // 添加带圆角的图片
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                image: const DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage("assets/images/xiaomiBanner2.png"))),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+            height: ScreenAdpater.height(260),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage("assets/images/tuijian01.png"))),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage("assets/images/tuijian03.png"))),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage("assets/images/tuijian02.png"))),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+//  热销臻选列表
+  List<Widget> _hotList() {
+    List<Widget> result = controller.hotList.map((element) {
+      String url = "$host${element.pic}";
+      url = url.replaceAll("\\", "/");
+      return Expanded(
+        flex: 1,
+        child: Container(
+          height: ScreenAdpater.height(240),
+          margin: EdgeInsets.fromLTRB(0, 0, 0, ScreenAdpater.height(20)),
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(246, 246, 246, 1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Column(
+                  children: [
+                    SizedBox(height: ScreenAdpater.height(20)),
+                    Text(element.title,
+                        style: TextStyle(
+                            fontSize: ScreenAdpater.fontSize(38),
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(height: ScreenAdpater.height(20)),
+                    Text(element.subTitle,
+                        style: TextStyle(fontSize: ScreenAdpater.fontSize(28))),
+                    SizedBox(height: ScreenAdpater.height(20)),
+                    Text("￥${element.price}元",
+                        style: TextStyle(fontSize: ScreenAdpater.fontSize(34)))
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: EdgeInsets.all(ScreenAdpater.height(8)),
+                  child: Image.network(url, fit: BoxFit.cover),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    }).toList();
+    return result;
+  }
+
+  // 热销臻选
+  Widget _hotSelling() {
+    return Column(
+      children: [
+        const SizedBox(
+          height: 10,
+        ),
+        //标题
+        Container(
+          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+          height: ScreenAdpater.height(100),
+          child: Stack(
+            children: [
+              const Positioned(
+                  left: 0,
+                  top: 0,
+                  child: Text(
+                    "热销甄选",
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  )),
+              Positioned(
+                  right: 0,
+                  top: 0,
+                  child: TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        "更多手机推荐 >",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Color.fromARGB(255, 158, 138, 138)),
+                      )))
+            ],
+          ),
+        ),
+        SizedBox(
+          height: ScreenAdpater.height(10),
+        ),
+        // 轮播和臻选项
+        Padding(
+          padding: EdgeInsets.fromLTRB(ScreenAdpater.width(20),
+              ScreenAdpater.height(10), ScreenAdpater.width(20), 0),
+          child: Obx(() => Row(
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                        height: ScreenAdpater.height(740),
+                        color: Colors.white,
+                        child: Swiper(
+                          itemCount: controller.hotSellingDataList.length,
+                          loop: true,
+                          autoplay: true,
+                          pagination: const SwiperPagination(
+                              builder: SwiperPagination.rect,
+                              alignment: Alignment.bottomCenter),
+                          itemBuilder: (context, index) {
+                            FocusItemModel item =
+                                controller.hotSellingDataList[index];
+                            String pic = "$host${item.pic}";
+                            var picUrl = pic.replaceAll("\\", "/");
+                            return Image.network(
+                              picUrl,
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        ),
+                      )),
+                  SizedBox(
+                    width: ScreenAdpater.height(10),
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                          height: ScreenAdpater.height(740),
+                          color: Colors.white,
+                          child: Column(children: _hotList())))
+                ],
+              )),
+        ),
+      ],
     );
   }
 }
