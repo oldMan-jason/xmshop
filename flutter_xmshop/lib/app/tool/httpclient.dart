@@ -14,7 +14,7 @@ class HttpClient {
   }
 
   // Get方法
-  Future get(String api, {Map<String, dynamic>? arguments}) async {
+  Future<Response> get(String api, {Map<String, dynamic>? arguments}) async {
     String url = HttpClient.domin + api;
     var response = await HttpClient.dio.get(url, queryParameters: arguments);
     return response;
