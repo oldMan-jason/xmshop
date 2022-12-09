@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_xmshop/app/tool/screenadapter.dart';
 import 'package:get/get.dart';
 import '../controllers/category_controller.dart';
-import '../../home/models/cate_model.dart';
-import '../../../tool/loadassets.dart';
 import '../../../tool/httpclient.dart';
 
 class CategoryView extends GetView<CategoryController> {
@@ -52,6 +50,7 @@ class CategoryView extends GetView<CategoryController> {
     );
   }
 
+  // 一级分类
   Widget _leftList() {
     return SizedBox(
       height: double.infinity,
@@ -60,6 +59,7 @@ class CategoryView extends GetView<CategoryController> {
           itemCount: controller.leftList.length,
           itemBuilder: (context, index) {
             var item = controller.leftList[index];
+            // 一级分类点击
             return InkWell(
               onTap: () {
                 controller.changeCategoryByIndex(index);
@@ -90,17 +90,41 @@ class CategoryView extends GetView<CategoryController> {
     );
   }
 
+  // 二级分类
   Widget _rightList() {
     return Expanded(
         child: SizedBox(
       height: double.infinity,
       child: Column(
         children: [
-          Container(
-            color: Colors.red,
-            height: ScreenAdpater.height(100),
-            width: double.infinity,
-          ),
+          Obx(() {
+            return SizedBox(
+                height: ScreenAdpater.height(120),
+                width: double.infinity,
+                child: GridView.builder(
+                    itemCount: controller.leftList.length,
+                    scrollDirection: Axis.horizontal,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1,
+                      childAspectRatio: 0.5,
+                    ),
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Text(
+                          controller.leftList[index].title!,
+                          maxLines: 1,
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.black45),
+                        ),
+                      );
+                    }));
+          }),
           Obx(() {
             return Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
