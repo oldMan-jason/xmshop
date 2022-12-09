@@ -5,9 +5,12 @@ import '../models/focus_model.dart';
 import '../models/cate_model.dart';
 import '../models/hot_model.dart';
 import '../models/stream_model.dart';
+import '../../../tool/httpclient.dart';
 
 class HomeController extends GetxController {
   late ScrollController scrollController = ScrollController();
+  late HttpClient httpClient = HttpClient();
+
   RxBool changeFlag = true.obs;
   bool iswhite = false;
   RxList<FocusItemModel> bannerDataList = <FocusItemModel>[].obs;
@@ -46,7 +49,7 @@ class HomeController extends GetxController {
 
   // 加载bannner数据
   _loadBannerData() async {
-    var response = await Dio().get("https://xiaomi.itying.com/api/focus");
+    var response = await httpClient.get("api/focus");
     Map<String, dynamic> map = response.data;
     // 模型化
     bannerDataList.value = FocusModel.fromJson(map).result!;
@@ -55,7 +58,7 @@ class HomeController extends GetxController {
 
   //加载分类数据
   _loadCateData() async {
-    var response = await Dio().get("https://xiaomi.itying.com/api/bestCate");
+    var response = await httpClient.get("api/bestCate");
     Map<String, dynamic> map = response.data;
     cateDataList.value = CateModel.fromJson(map).result!;
     update();
@@ -63,8 +66,7 @@ class HomeController extends GetxController {
 
   // 臻选Banner
   _loadHotSellingBannerData() async {
-    var response =
-        await Dio().get("https://xiaomi.itying.com/api/focus?position=2");
+    var response = await httpClient.get("api/focus?position=2");
     Map<String, dynamic> map = response.data;
     hotSellingDataList.value = FocusModel.fromJson(map).result!;
     update();
@@ -72,8 +74,7 @@ class HomeController extends GetxController {
 
   // 获取臻选推荐列表
   _loadHotSellingData() async {
-    var response =
-        await Dio().get("http://xiaomi.itying.com/api/plist?is_hot=1");
+    var response = await httpClient.get("api/plist?is_hot=1");
     Map<String, dynamic> map = response.data;
     hotList.value = Hotlist.fromJson(map).result;
 
@@ -87,7 +88,7 @@ class HomeController extends GetxController {
 
   //瀑布流数据
   _loadStreamData() async {
-    var response = await Dio().get("https://xiaomi.itying.com/api/plist");
+    var response = await httpClient.get("api/plist");
     Map<String, dynamic> map = response.data;
     streamList.value = StreamModel.fromJson(map).result;
     update();

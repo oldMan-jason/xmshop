@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_xmshop/app/modules/home/models/cate_model.dart';
 import 'package:flutter_xmshop/app/modules/home/models/focus_model.dart';
@@ -9,10 +7,10 @@ import '../controllers/home_controller.dart';
 import '../../../tool/cachepagestatewrapper.dart';
 import '../../../customview/homeappbar.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
-import '../../../macro/macro.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
 import '../models/stream_model.dart';
+import '../../../tool/httpclient.dart';
+import '../../../tool/loadassets.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
@@ -74,10 +72,8 @@ class HomeView extends GetView<HomeController> {
             itemCount: controller.bannerDataList.length,
             itemBuilder: (context, index) {
               FocusItemModel item = controller.bannerDataList[index];
-              String url = "$host${item.pic}";
-              String newurl = url.replaceAll("\\", "/");
               return Image.network(
-                newurl,
+                HttpClient.replacePicUrl(item.pic!),
                 fit: BoxFit.cover,
               );
             },
@@ -90,10 +86,7 @@ class HomeView extends GetView<HomeController> {
     return SizedBox(
       width: ScreenAdpater.getScreenWidth(),
       height: ScreenAdpater.height(92),
-      child: Image.asset(
-        "assets/images/xiaomiBanner.png",
-        fit: BoxFit.cover,
-      ),
+      child: LoadAssetsImage.loadAssetsName("xiaomiBanner"),
     );
   }
 
@@ -122,7 +115,6 @@ class HomeView extends GetView<HomeController> {
                   itemBuilder: (context, i) {
                     CateItemModel item =
                         controller.cateDataList[index * 10 + i];
-                    var url = item.pic!.replaceAll("\\", "/");
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -132,7 +124,7 @@ class HomeView extends GetView<HomeController> {
                           height: ScreenAdpater.height(120),
                           width: ScreenAdpater.width(120),
                           child: Image.network(
-                            "$host$url",
+                            HttpClient.replacePicUrl(item.pic!),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -167,9 +159,9 @@ class HomeView extends GetView<HomeController> {
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(14),
-                image: const DecorationImage(
+                image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage("assets/images/xiaomiBanner2.png"))),
+                    image: LoadAssetsImage.loadProviderImage("xiaomiBanner2"))),
           ),
           const SizedBox(
             height: 10,
@@ -183,9 +175,10 @@ class HomeView extends GetView<HomeController> {
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        image: const DecorationImage(
+                        image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage("assets/images/tuijian01.png"))),
+                            image: LoadAssetsImage.loadProviderImage(
+                                "tuijian01"))),
                   ),
                 ),
                 const SizedBox(
@@ -196,9 +189,10 @@ class HomeView extends GetView<HomeController> {
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        image: const DecorationImage(
+                        image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage("assets/images/tuijian03.png"))),
+                            image: LoadAssetsImage.loadProviderImage(
+                                "tuijian03"))),
                   ),
                 ),
                 const SizedBox(
@@ -209,9 +203,10 @@ class HomeView extends GetView<HomeController> {
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        image: const DecorationImage(
+                        image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage("assets/images/tuijian02.png"))),
+                            image: LoadAssetsImage.loadProviderImage(
+                                "tuijian02"))),
                   ),
                 )
               ],
@@ -225,8 +220,6 @@ class HomeView extends GetView<HomeController> {
   // 热销臻选列表
   List<Widget> _hotList() {
     List<Widget> result = controller.hotList.map((element) {
-      String url = "$host${element.pic}";
-      url = url.replaceAll("\\", "/");
       return Expanded(
         flex: 1,
         child: Container(
@@ -260,7 +253,8 @@ class HomeView extends GetView<HomeController> {
                 flex: 2,
                 child: Padding(
                   padding: EdgeInsets.all(ScreenAdpater.height(8)),
-                  child: Image.network(url, fit: BoxFit.cover),
+                  child: Image.network(HttpClient.replacePicUrl(element.pic),
+                      fit: BoxFit.cover),
                 ),
               )
             ],
@@ -329,10 +323,9 @@ class HomeView extends GetView<HomeController> {
                           itemBuilder: (context, index) {
                             FocusItemModel item =
                                 controller.hotSellingDataList[index];
-                            String pic = "$host${item.pic}";
-                            var picUrl = pic.replaceAll("\\", "/");
+
                             return Image.network(
-                              picUrl,
+                              HttpClient.replacePicUrl(item.pic!),
                               fit: BoxFit.cover,
                             );
                           },
@@ -394,8 +387,7 @@ class HomeView extends GetView<HomeController> {
                   crossAxisSpacing: ScreenAdpater.width(20),
                   itemBuilder: (context, index) {
                     SteamItemModel item = controller.streamList[index];
-                    var url = "$host${item.sPic}";
-                    url = url.replaceAll("\\", "/");
+
                     return Container(
                       padding: EdgeInsets.all(ScreenAdpater.width(20)),
                       decoration: BoxDecoration(
@@ -406,7 +398,7 @@ class HomeView extends GetView<HomeController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Image.network(
-                            url,
+                            HttpClient.replacePicUrl(item.sPic),
                             fit: BoxFit.cover,
                           ),
                           Text(item.title),
