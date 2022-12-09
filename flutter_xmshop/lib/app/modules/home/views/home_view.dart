@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_xmshop/app/modules/home/models/cate_model.dart';
 import 'package:flutter_xmshop/app/modules/home/models/focus_model.dart';
@@ -8,6 +10,9 @@ import '../../../tool/cachepagestatewrapper.dart';
 import '../../../customview/homeappbar.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import '../../../macro/macro.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import '../models/stream_model.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
@@ -48,7 +53,8 @@ class HomeView extends GetView<HomeController> {
           _getads(),
           _getCate(),
           _getRecommend(),
-          _hotSelling()
+          _hotSelling(),
+          _waterfall(),
         ],
       ),
     );
@@ -59,7 +65,6 @@ class HomeView extends GetView<HomeController> {
     return SizedBox(
       width: ScreenAdpater.getScreenWidth(),
       height: ScreenAdpater.height(682),
-      // 插件的使用
       child: Obx(() => Swiper(
             pagination: const SwiperPagination(
                 builder: SwiperPagination.rect,
@@ -217,7 +222,7 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-//  热销臻选列表
+  // 热销臻选列表
   List<Widget> _hotList() {
     List<Widget> result = controller.hotList.map((element) {
       String url = "$host${element.pic}";
@@ -284,7 +289,7 @@ class HomeView extends GetView<HomeController> {
                   top: 0,
                   child: Text(
                     "热销甄选",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   )),
               Positioned(
                   right: 0,
@@ -294,7 +299,7 @@ class HomeView extends GetView<HomeController> {
                       child: const Text(
                         "更多手机推荐 >",
                         style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 14,
                             color: Color.fromARGB(255, 158, 138, 138)),
                       )))
             ],
@@ -347,5 +352,72 @@ class HomeView extends GetView<HomeController> {
         ),
       ],
     );
+  }
+
+  // 瀑布流
+  Widget _waterfall() {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "省心优惠",
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text("更多优惠 >",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 158, 138, 138))),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: double.infinity,
+              color: Colors.white,
+              child: Obx(() => MasonryGridView.count(
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: controller.streamList.length,
+                  crossAxisCount: 2,
+                  mainAxisSpacing: ScreenAdpater.height(20),
+                  crossAxisSpacing: ScreenAdpater.width(20),
+                  itemBuilder: (context, index) {
+                    SteamItemModel item = controller.streamList[index];
+                    var url = "$host${item.sPic}";
+                    url = url.replaceAll("\\", "/");
+                    return Container(
+                      padding: EdgeInsets.all(ScreenAdpater.width(20)),
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 248, 247, 247),
+                          borderRadius: BorderRadius.circular(14)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Image.network(
+                            url,
+                            fit: BoxFit.cover,
+                          ),
+                          Text(item.title),
+                          Text(item.subTitle),
+                          Text("价格：￥${item.price}"),
+                        ],
+                      ),
+                    );
+                  })),
+            )
+          ],
+        ));
   }
 }

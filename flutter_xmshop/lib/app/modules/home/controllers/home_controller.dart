@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import '../models/focus_model.dart';
 import '../models/cate_model.dart';
 import '../models/hot_model.dart';
+import '../models/stream_model.dart';
 
 class HomeController extends GetxController {
   late ScrollController scrollController = ScrollController();
@@ -13,6 +14,8 @@ class HomeController extends GetxController {
   RxList<CateItemModel> cateDataList = <CateItemModel>[].obs;
   RxList<FocusItemModel> hotSellingDataList = <FocusItemModel>[].obs;
   RxList<HotItemModel> hotList = <HotItemModel>[].obs;
+  RxList<SteamItemModel> streamList = <SteamItemModel>[].obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -21,6 +24,7 @@ class HomeController extends GetxController {
     _loadCateData();
     _loadHotSellingBannerData();
     _loadHotSellingData();
+    _loadStreamData();
   }
 
   //监听lsitView的滚动
@@ -78,6 +82,14 @@ class HomeController extends GetxController {
     //   value.value;
     //   return "";
     // });
+    update();
+  }
+
+  //瀑布流数据
+  _loadStreamData() async {
+    var response = await Dio().get("https://xiaomi.itying.com/api/plist");
+    Map<String, dynamic> map = response.data;
+    streamList.value = StreamModel.fromJson(map).result;
     update();
   }
 }
