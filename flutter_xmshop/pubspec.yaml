@@ -43,4 +43,10 @@ flutter:
     - assets/images/tuijian03.png
     - assets/images/2.0x/tuijian03.png
     - assets/images/3.0x/tuijian03.png
+    - assets/images/xmmessage.png
+    - assets/images/2.0x/xmmessage.png
+    - assets/images/3.0x/xmmessage.png
+    - assets/images/xmsearch.png
+    - assets/images/2.0x/xmsearch.png
+    - assets/images/3.0x/xmsearch.png
 
