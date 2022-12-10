@@ -12,6 +12,7 @@ class ProductlistView extends GetView<ProductlistController> {
   // appBar
   PreferredSizeWidget _setupAppBar() {
     return AppBar(
+      actions: const [Text("")],
       backgroundColor: Colors.white,
       elevation: 0,
       leading: IconButton(
@@ -89,7 +90,8 @@ class ProductlistView extends GetView<ProductlistController> {
                                     : Colors.grey),
                           ),
                           // arrow_drop_up_outlined
-                          controller.sort.value == e["id"]
+                          (controller.sort.value == e["id"] &&
+                                  controller.arrow.value == 1)
                               ? const Icon(Icons.arrow_drop_up_outlined)
                               : const Icon(Icons.arrow_drop_down_outlined),
                         ])),
@@ -170,6 +172,10 @@ class ProductlistView extends GetView<ProductlistController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: controller.globalKey,
+      endDrawer: const Drawer(
+        child: Text("开始赛选了"),
+      ),
       appBar: _setupAppBar(),
       body: _setupListView(),
     );

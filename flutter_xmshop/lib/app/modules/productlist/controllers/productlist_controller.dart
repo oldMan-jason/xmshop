@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
  *  商品列表
  */
 class ProductlistController extends GetxController {
+  GlobalKey<ScaffoldState> globalKey = GlobalKey();
   late ScrollController scrollController = ScrollController();
   int pageNumber = 1;
   bool isRequest = true;
@@ -16,6 +17,8 @@ class ProductlistController extends GetxController {
   late HttpClient httpClient = HttpClient();
   RxList<PlistItemModel> listData = <PlistItemModel>[].obs;
   RxInt sort = 0.obs;
+  String sortParma = "";
+  RxInt arrow = 1.obs;
 
   /*二级导航数据*/
   List subHeaderList = [
@@ -49,8 +52,22 @@ class ProductlistController extends GetxController {
     });
   }
 
+  // 筛选切换
   chanageOptions(id) {
     sort.value = id;
+    if (id == 4) {
+      globalKey.currentState!.openEndDrawer();
+      return;
+    } else {
+      sortParma =
+          "${subHeaderList[id - 1]["fileds"]}_${subHeaderList[id - 1]["sort"]}";
+      arrow.value = arrow.value * -1;
+      print("awwrorr -- ${arrow.value}");
+    }
+
+    //重置
+    listData.value = [];
+    headerRefresh();
     update();
   }
 
@@ -63,7 +80,12 @@ class ProductlistController extends GetxController {
   _loadListData() async {
     if (isRequest && hasData.value) {
       isRequest = false;
-      var argu = {"cid": Get.arguments, "page": pageNumber, "pageSize": 10};
+      var argu = {
+        "cid": Get.arguments,
+        "sort": sortParma,
+        "page": pageNumber,
+        "pageSize": 10
+      };
       var response = await httpClient.get("api/plist", arguments: argu);
       print("参数 -- $argu");
       if (response.data != null) {
