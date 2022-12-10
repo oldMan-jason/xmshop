@@ -142,18 +142,23 @@ class CategoryView extends GetView<CategoryController> {
                   ),
                   itemBuilder: (context, index) {
                     var item = controller.rightList[index];
-                    return Column(
-                      children: [
-                        Image.network(
-                          HttpClient.replacePicUrl(item.pic!),
-                          fit: BoxFit.cover,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                          alignment: Alignment.center,
-                          child: Text(item.title!),
-                        ),
-                      ],
+                    return InkWell(
+                      onTap: () {
+                        Get.toNamed("/productlist", arguments: item.sId);
+                      },
+                      child: Column(
+                        children: [
+                          Image.network(
+                            HttpClient.replacePicUrl(item.pic!),
+                            fit: BoxFit.cover,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            alignment: Alignment.center,
+                            child: Text(item.title!),
+                          ),
+                        ],
+                      ),
                     );
                   }),
             );

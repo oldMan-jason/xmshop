@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/productlist/bindings/productlist_binding.dart';
+import '../modules/productlist/views/productlist_view.dart';
 import '../modules/tabs/bindings/tabs_binding.dart';
 import '../modules/tabs/views/tabs_view.dart';
 
@@ -15,6 +17,11 @@ class AppPages {
       name: _Paths.TABS,
       page: () => const TabsView(),
       binding: TabsBinding(),
+    ),
+    GetPage(
+      name: _Paths.PRODUCTLIST,
+      page: () => const ProductlistView(),
+      binding: ProductlistBinding(),
     ),
   ];
 }

@@ -19,7 +19,10 @@ void main() {
       splitScreenMode: true,
       builder: (context, child) {
         return GetMaterialApp(
-          title: "Application",
+          // 设置主题颜色
+          theme: ThemeData(primarySwatch: Colors.grey),
+          //配置ios动画
+          defaultTransition: Transition.rightToLeft,
           debugShowCheckedModeBanner: false,
           initialRoute: AppPages.INITIAL,
           getPages: AppPages.routes,
