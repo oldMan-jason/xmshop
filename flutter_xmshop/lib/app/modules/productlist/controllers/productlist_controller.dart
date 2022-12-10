@@ -15,6 +15,21 @@ class ProductlistController extends GetxController {
   RxBool hasData = true.obs;
   late HttpClient httpClient = HttpClient();
   RxList<PlistItemModel> listData = <PlistItemModel>[].obs;
+  RxInt sort = 0.obs;
+
+  /*二级导航数据*/
+  List subHeaderList = [
+    {
+      "id": 1,
+      "title": "综合",
+      "fileds": "all",
+      "sort":
+          -1, // 排序     升序：price_1     {price:1}        降序：price_-1   {price:-1}
+    },
+    {"id": 2, "title": "销量", "fileds": 'salecount', "sort": -1},
+    {"id": 3, "title": "价格", "fileds": 'price', "sort": -1},
+    {"id": 4, "title": "筛选"}
+  ];
 
   @override
   void onInit() {
@@ -32,6 +47,11 @@ class ProductlistController extends GetxController {
         _loadListData();
       }
     });
+  }
+
+  chanageOptions(id) {
+    sort.value = id;
+    update();
   }
 
   headerRefresh() {

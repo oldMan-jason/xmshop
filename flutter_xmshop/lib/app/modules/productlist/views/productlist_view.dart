@@ -51,7 +51,6 @@ class ProductlistView extends GetView<ProductlistController> {
         child: CircularProgressIndicator(),
       );
     }
-
     return const Center(
       child: Text("没有更多数据了..."),
     );
@@ -59,71 +58,112 @@ class ProductlistView extends GetView<ProductlistController> {
 
   Widget _setupListView() {
     return Stack(
-      children: [
-        Obx(() => controller.listData.isNotEmpty
-            ? ListView.builder(
-                controller: controller.scrollController, //监听滚动刷新
-                itemCount: controller.listData.length,
-                itemBuilder: (context, index) {
-                  PlistItemModel item = controller.listData[index];
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: ScreenAdpater.width(480),
-                              height: ScreenAdpater.height(350),
-                              child: Image.network(
-                                HttpClient.replacePicUrl(item.sPic!),
-                                fit: BoxFit.fitHeight,
-                              ),
+      children: [_listView(), _changeView()],
+    );
+  }
+
+  Widget _changeView() {
+    return Positioned(
+        left: 0,
+        top: 0,
+        right: 0,
+        height: 44,
+        child: Obx(() {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: controller.subHeaderList.map((e) {
+              return InkWell(
+                onTap: () {
+                  controller.chanageOptions(e["id"]);
+                },
+                child: Expanded(
+                    flex: 1,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            e["title"],
+                            style: TextStyle(
+                                color: controller.sort.value == e["id"]
+                                    ? Colors.red
+                                    : Colors.grey),
+                          ),
+                          // arrow_drop_up_outlined
+                          controller.sort.value == e["id"]
+                              ? const Icon(Icons.arrow_drop_up_outlined)
+                              : const Icon(Icons.arrow_drop_down_outlined),
+                        ])),
+              );
+            }).toList(),
+          );
+        }));
+  }
+
+  Widget _listView() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+      child: Obx(() => controller.listData.isNotEmpty
+          ? ListView.builder(
+              controller: controller.scrollController, //监听滚动刷新
+              itemCount: controller.listData.length,
+              itemBuilder: (context, index) {
+                PlistItemModel item = controller.listData[index];
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: ScreenAdpater.width(480),
+                            height: ScreenAdpater.height(350),
+                            child: Image.network(
+                              HttpClient.replacePicUrl(item.sPic!),
+                              fit: BoxFit.fitHeight,
                             ),
-                            Expanded(
-                                child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item.title!,
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  item.subTitle!,
-                                  style: const TextStyle(fontSize: 16),
-                                ),
-                                RichText(
-                                    text: TextSpan(
-                                        text: "￥",
+                          ),
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.title!,
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                item.subTitle!,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                              RichText(
+                                  text: TextSpan(
+                                      text: "￥",
+                                      style: const TextStyle(
+                                          fontSize: 12, color: Colors.grey),
+                                      children: [
+                                    TextSpan(
+                                        text: "${item.price!}",
                                         style: const TextStyle(
-                                            fontSize: 12, color: Colors.grey),
-                                        children: [
-                                      TextSpan(
-                                          text: "${item.price!}",
-                                          style: const TextStyle(
-                                              fontSize: 17, color: Colors.red))
-                                    ])),
-                              ],
-                            ))
-                          ],
-                        ),
+                                            fontSize: 17, color: Colors.red))
+                                  ])),
+                            ],
+                          ))
+                        ],
                       ),
-                      (index == controller.listData.length - 1)
-                          ? _progressWidget()
-                          : const Text("")
-                    ],
-                  );
-                })
-            : _progressWidget())
-      ],
+                    ),
+                    (index == controller.listData.length - 1)
+                        ? _progressWidget()
+                        : const Text("")
+                  ],
+                );
+              })
+          : _progressWidget()),
     );
   }
 
