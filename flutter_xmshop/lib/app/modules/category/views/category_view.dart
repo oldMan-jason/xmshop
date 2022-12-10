@@ -26,7 +26,10 @@ class CategoryView extends GetView<CategoryController> {
                 borderRadius: BorderRadius.circular(20)),
             child: Row(
               children: [
-                Image.asset("assets/images/xmsearch.png"),
+                Image.asset(
+                  "assets/images/xmsearch.png",
+                  // color: const Color.fromRGBO(246, 247, 248, 1),
+                ),
                 const Text(
                   "请输入商品名称...",
                   style: TextStyle(
