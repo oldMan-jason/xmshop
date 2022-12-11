@@ -39,7 +39,9 @@ class ProductlistView extends GetView<ProductlistController> {
               children: [
                 LoadAssetsImage.loadAssetsName("xmsearch"),
                 Text(
-                  Get.arguments["keyWord"] ?? "请输入内容...",
+                  (Get.arguments is Map)
+                      ? (Get.arguments["keyWord"] ?? "请输入内容...")
+                      : "请输入内容...",
                   style: const TextStyle(
                       fontSize: 14, color: Color.fromRGBO(156, 157, 158, 1)),
                 )

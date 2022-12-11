@@ -19,7 +19,7 @@ class ProductlistController extends GetxController {
   RxInt sort = 0.obs;
   String sortParma = "";
   RxInt arrow = 1.obs;
-  String? searchValue = Get.arguments["keyWord"];
+  String? searchValue;
 
   /*二级导航数据*/
   List subHeaderList = [
@@ -38,6 +38,10 @@ class ProductlistController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    if (Get.arguments is Map) {
+      searchValue = Get.arguments["keyWord"];
+    }
+
     _addListen();
     _loadListData();
   }
