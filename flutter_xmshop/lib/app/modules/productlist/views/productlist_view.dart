@@ -20,32 +20,38 @@ class ProductlistView extends GetView<ProductlistController> {
             Get.back();
           },
           icon: const Icon(Icons.arrow_back_ios)),
-      title: Padding(
-        padding: EdgeInsets.fromLTRB(ScreenAdpater.width(0),
-            ScreenAdpater.height(20), ScreenAdpater.width(20), 0),
-        child: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-          width: double.infinity,
-          height: ScreenAdpater.height(88),
-          decoration: BoxDecoration(
-              color: const Color.fromRGBO(246, 247, 248, 1),
-              borderRadius: BorderRadius.circular(20)),
-          child: Row(
-            children: [
-              LoadAssetsImage.loadAssetsName("xmsearch"),
-              const Text(
-                "请输入商品名称...",
-                style: TextStyle(
-                    fontSize: 14, color: Color.fromRGBO(156, 157, 158, 1)),
-              )
-            ],
+      title: InkWell(
+        onTap: () {
+          Get.offAndToNamed("/search");
+        },
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(ScreenAdpater.width(0),
+              ScreenAdpater.height(20), ScreenAdpater.width(20), 0),
+          child: Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            width: double.infinity,
+            height: ScreenAdpater.height(88),
+            decoration: BoxDecoration(
+                color: const Color.fromRGBO(246, 247, 248, 1),
+                borderRadius: BorderRadius.circular(20)),
+            child: Row(
+              children: [
+                LoadAssetsImage.loadAssetsName("xmsearch"),
+                Text(
+                  Get.arguments["keyWord"] ?? "请输入内容...",
+                  style: const TextStyle(
+                      fontSize: 14, color: Color.fromRGBO(156, 157, 158, 1)),
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
+  // 刷新
   Widget _progressWidget() {
     if (controller.hasData.value) {
       return const Center(
@@ -63,6 +69,7 @@ class ProductlistView extends GetView<ProductlistController> {
     );
   }
 
+  // 筛选
   Widget _changeView() {
     return Positioned(
         left: 0,
@@ -101,6 +108,7 @@ class ProductlistView extends GetView<ProductlistController> {
         }));
   }
 
+  // 列表
   Widget _listView() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),

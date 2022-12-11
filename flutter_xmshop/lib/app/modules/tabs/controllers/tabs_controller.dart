@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 ///  控制tabsview的逻辑
 class TabsController extends GetxController {
   // item点击索引
-  var tabItemSelectIndex = 1.obs;
+  var tabItemSelectIndex = 0.obs;
 
   // 页面滚动缓存，在pageview 和tabView中才被使用
   late PageController pageController =

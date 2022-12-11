@@ -5,10 +5,12 @@ abstract class Routes {
   Routes._();
   static const TABS = _Paths.TABS;
   static const PRODUCTLIST = _Paths.PRODUCTLIST;
+  static const SEARCH = _Paths.SEARCH;
 }
 
 abstract class _Paths {
   _Paths._();
   static const TABS = '/tabs';
   static const PRODUCTLIST = '/productlist';
+  static const SEARCH = '/search';
 }

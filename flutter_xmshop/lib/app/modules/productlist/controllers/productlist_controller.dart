@@ -19,6 +19,7 @@ class ProductlistController extends GetxController {
   RxInt sort = 0.obs;
   String sortParma = "";
   RxInt arrow = 1.obs;
+  String? searchValue = Get.arguments["keyWord"];
 
   /*二级导航数据*/
   List subHeaderList = [
@@ -80,12 +81,23 @@ class ProductlistController extends GetxController {
   _loadListData() async {
     if (isRequest && hasData.value) {
       isRequest = false;
-      var argu = {
-        "cid": Get.arguments,
-        "sort": sortParma,
-        "page": pageNumber,
-        "pageSize": 10
-      };
+      Map<String, dynamic> argu;
+      if (searchValue != null) {
+        argu = {
+          "search": Get.arguments["keyWord"],
+          "sort": sortParma,
+          "page": pageNumber,
+          "pageSize": 10
+        };
+      } else {
+        argu = {
+          "cid": Get.arguments,
+          "sort": sortParma,
+          "page": pageNumber,
+          "pageSize": 10
+        };
+      }
+
       var response = await httpClient.get("api/plist", arguments: argu);
       print("参数 -- $argu");
       if (response.data != null) {

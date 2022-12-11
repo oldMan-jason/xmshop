@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 import '../modules/home/controllers/home_controller.dart';
 import '../tool/customicon.dart';
 import '../tool/screenadapter.dart';
+import 'package:get/get.dart';
 
 class HomeAppBar extends AppBar {
   final HomeController controller;
@@ -25,32 +27,37 @@ class HomeAppBar extends AppBar {
       leadingWidth: controller.changeFlag.value
           ? ScreenAdpater.width(200)
           : ScreenAdpater.width(80),
-      title: AnimatedContainer(
-        duration: const Duration(seconds: 3),
-        width: controller.changeFlag.value
-            ? ScreenAdpater.width(620)
-            : ScreenAdpater.width(820),
-        height: ScreenAdpater.height(96),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(48)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-              child: Icon(
-                Icons.search,
-                size: 28,
-                color: Colors.grey,
+      title: InkWell(
+        onTap: () {
+          Get.toNamed("/search");
+        },
+        child: AnimatedContainer(
+          duration: const Duration(seconds: 3),
+          width: controller.changeFlag.value
+              ? ScreenAdpater.width(620)
+              : ScreenAdpater.width(820),
+          height: ScreenAdpater.height(96),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(48)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                child: Icon(
+                  Icons.search,
+                  size: 28,
+                  color: Colors.grey,
+                ),
               ),
-            ),
-            Text(
-              "请输入搜索内容...",
-              style: TextStyle(
-                  fontSize: ScreenAdpater.fontSize(38),
-                  color: const Color.fromARGB(255, 131, 122, 122)),
-            )
-          ],
+              Text(
+                "请输入搜索内容...",
+                style: TextStyle(
+                    fontSize: ScreenAdpater.fontSize(38),
+                    color: const Color.fromARGB(255, 131, 122, 122)),
+              )
+            ],
+          ),
         ),
       ),
       actions: [

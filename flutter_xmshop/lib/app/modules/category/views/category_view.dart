@@ -24,18 +24,22 @@ class CategoryView extends GetView<CategoryController> {
             decoration: BoxDecoration(
                 color: const Color.fromRGBO(246, 247, 248, 1),
                 borderRadius: BorderRadius.circular(20)),
-            child: Row(
-              children: [
-                Image.asset(
-                  "assets/images/xmsearch.png",
-                  // color: const Color.fromRGBO(246, 247, 248, 1),
-                ),
-                const Text(
-                  "请输入商品名称...",
-                  style: TextStyle(
-                      fontSize: 14, color: Color.fromRGBO(156, 157, 158, 1)),
-                )
-              ],
+            child: InkWell(
+              onTap: () {
+                Get.toNamed("/search");
+              },
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/images/xmsearch.png",
+                  ),
+                  const Text(
+                    "请输入商品名称...",
+                    style: TextStyle(
+                        fontSize: 14, color: Color.fromRGBO(156, 157, 158, 1)),
+                  )
+                ],
+              ),
             ),
           ),
         ),
