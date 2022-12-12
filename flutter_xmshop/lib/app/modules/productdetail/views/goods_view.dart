@@ -27,7 +27,7 @@ class GoodsView extends GetView {
           ? Container(
               key: controller.globalKey1,
               width: double.infinity,
-              height: 1000,
+              // height: 1000,
               child: Column(
                 children: [
                   // 图片

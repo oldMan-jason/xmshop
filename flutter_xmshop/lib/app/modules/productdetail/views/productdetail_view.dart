@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_xmshop/app/tool/screenadapter.dart';
 import 'package:get/get.dart';
 import '../controllers/productdetail_controller.dart';
@@ -19,7 +20,7 @@ class ProductdetailView extends GetView<ProductdetailController> {
           excludeHeaderSemantics: true,
           backgroundColor:
               Colors.white.withOpacity(controller.op.value), //实现透明导航
-          elevation: 0, //实现透明导航
+          elevation: controller.op.value, //实现透明导航
           centerTitle: true,
           title: Container(
             width: 300,
@@ -155,6 +156,38 @@ class ProductdetailView extends GetView<ProductdetailController> {
     );
   }
 
+  Widget _subHeader() {
+    return Container(
+      alignment: Alignment.center,
+      color: Colors.white,
+      height: 64,
+      child: Row(
+        children: [
+          Expanded(
+              flex: 1,
+              child: Text(
+                "商品介绍",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold),
+              )),
+          Expanded(
+              flex: 1,
+              child: Text(
+                "规格参数",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ))
+        ],
+      ),
+    );
+  }
+
   Widget _bottom() {
     return Positioned(
         bottom: 0,
@@ -242,7 +275,7 @@ class ProductdetailView extends GetView<ProductdetailController> {
     return SingleChildScrollView(
       controller: controller.scrollController,
       child: Column(
-        children: [GoodsView(), DetailView(), RecommendView()],
+        children: [GoodsView(), DetailView(_subHeader), RecommendView()],
       ),
     );
   }
@@ -256,6 +289,17 @@ class ProductdetailView extends GetView<ProductdetailController> {
         children: [
           _listView(),
           _bottom(),
+          Obx(() {
+            return Positioned(
+              child: controller.subHeaderShowFlag.value
+                  ? _subHeader()
+                  : Container(),
+              left: 0,
+              right: 0,
+              top: MediaQuery.of(context).size.height * 0.06 +
+                  ScreenUtil().statusBarHeight,
+            );
+          })
         ],
       ),
     );

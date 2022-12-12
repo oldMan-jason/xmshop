@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../tool/httpclient.dart';
 import '../models/pcontent.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductdetailController extends GetxController {
   GlobalKey globalKey1 = GlobalKey();
@@ -11,12 +13,17 @@ class ProductdetailController extends GetxController {
   late HttpClient httpClient = HttpClient();
   // 自定义响应式model
   var item = PcontentItemModel().obs;
+  // bottomSheet
   RxList<PcontentAttrModel> attModel = <PcontentAttrModel>[].obs;
+  RxInt selectId = 1.obs;
 
+  // 导航条透明度
   RxDouble op = 0.0.obs;
   //是否显示tabs
   RxBool showTabs = false.obs;
-  RxInt selectId = 1.obs;
+
+  RxBool subHeaderShowFlag = false.obs;
+
   late ScrollController scrollController = ScrollController();
   List tabsList = [
     {
@@ -26,11 +33,13 @@ class ProductdetailController extends GetxController {
     {"id": 2, "title": "详情"},
     {"id": 3, "title": "推荐"}
   ];
+
   @override
   void onInit() {
     super.onInit();
     _loadData();
     scrollController.addListener(() {
+      _controllSubHeader();
       if (scrollController.position.pixels < 0) {
         showTabs.value = false;
         op.value = 0.0;
@@ -40,6 +49,9 @@ class ProductdetailController extends GetxController {
 
       if (scrollController.position.pixels <= 100) {
         op.value = scrollController.position.pixels / 100;
+        if (op.value > 0.9) {
+          op.value = 1.0;
+        }
         if (showTabs.value == true) {
           showTabs.value = false;
         }
@@ -53,7 +65,30 @@ class ProductdetailController extends GetxController {
     });
   }
 
-// https://xiaomi.itying.com/api/pcontent?id=6332bc60a3a7080ac06eaee8
+  _controllSubHeader() {
+    RenderBox box2 = globalKey2.currentContext!.findRenderObject() as RenderBox;
+    double box2H = box2.localToGlobal(Offset.zero).dy;
+
+    RenderBox box3 = globalKey3.currentContext!.findRenderObject() as RenderBox;
+    double box3H = box3.localToGlobal(Offset.zero).dy;
+
+    var h = MediaQuery.of(Get.context!).size.height * 0.06;
+    var stateH = ScreenUtil().statusBarHeight;
+
+    if (box2H < (stateH + h)) {
+      if (!subHeaderShowFlag.value) {
+        subHeaderShowFlag.value = true;
+      }
+    } else {
+      if (subHeaderShowFlag.value) {
+        subHeaderShowFlag.value = false;
+      }
+    }
+    // print("box2 -- ${box2H}");
+    // print("box3 -- ${box3H}");
+    // print("scroll -- ${scrollController.offset}");
+  }
+
   changeNavIndex(id) {
     selectId.value = id;
     //跳转到指定的容器
