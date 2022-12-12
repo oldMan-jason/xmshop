@@ -387,24 +387,29 @@ class HomeView extends GetView<HomeController> {
                   crossAxisSpacing: ScreenAdpater.width(20),
                   itemBuilder: (context, index) {
                     SteamItemModel item = controller.streamList[index];
-
-                    return Container(
-                      padding: EdgeInsets.all(ScreenAdpater.width(20)),
-                      decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 248, 247, 247),
-                          borderRadius: BorderRadius.circular(14)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.network(
-                            HttpClient.replacePicUrl(item.sPic),
-                            fit: BoxFit.cover,
-                          ),
-                          Text(item.title),
-                          Text(item.subTitle),
-                          Text("价格：￥${item.price}"),
-                        ],
+                    return InkWell(
+                      onTap: () {
+                        Get.toNamed("/productdetail",
+                            arguments: {"cid": item.id});
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(ScreenAdpater.width(20)),
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 248, 247, 247),
+                            borderRadius: BorderRadius.circular(14)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.network(
+                              HttpClient.replacePicUrl(item.sPic),
+                              fit: BoxFit.cover,
+                            ),
+                            Text(item.title),
+                            Text(item.subTitle),
+                            Text("价格：￥${item.price}"),
+                          ],
+                        ),
                       ),
                     );
                   })),
