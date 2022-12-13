@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_xmshop/app/tool/screenadapter.dart';
 import 'package:get/get.dart';
 import '../../../tool/httpclient.dart';
 import '../models/pcontent.dart';
@@ -23,8 +24,9 @@ class ProductdetailController extends GetxController {
   RxBool showTabs = false.obs;
 
   RxBool subHeaderShowFlag = false.obs;
-
   late ScrollController scrollController = ScrollController();
+
+  // 一级浮动标题
   List tabsList = [
     {
       "id": 1,
@@ -34,10 +36,25 @@ class ProductdetailController extends GetxController {
     {"id": 3, "title": "推荐"}
   ];
 
+  // 二级浮动标题
+  List subTabsList = [
+    {
+      "id": 1,
+      "title": "商品介绍",
+    },
+    {"id": 2, "title": "规格参数"},
+  ];
+  RxInt selectSubTabsIndex = 1.obs;
+
   @override
   void onInit() {
     super.onInit();
     _loadData();
+    _topNavBar();
+  }
+
+  // 顶部切换
+  _topNavBar() {
     scrollController.addListener(() {
       _controllSubHeader();
       if (scrollController.position.pixels < 0) {
@@ -65,6 +82,7 @@ class ProductdetailController extends GetxController {
     });
   }
 
+  // 悬浮Header
   _controllSubHeader() {
     RenderBox box2 = globalKey2.currentContext!.findRenderObject() as RenderBox;
     double box2H = box2.localToGlobal(Offset.zero).dy;
@@ -89,6 +107,12 @@ class ProductdetailController extends GetxController {
     // print("scroll -- ${scrollController.offset}");
   }
 
+  // 悬浮headerTab切换
+  changeSubTabsIndex(id) {
+    selectSubTabsIndex.value = id;
+    update();
+  }
+
   changeNavIndex(id) {
     selectId.value = id;
     //跳转到指定的容器
@@ -107,7 +131,6 @@ class ProductdetailController extends GetxController {
   }
 
   updateSheetFlag1(title) {
-    List tl = [];
     var firstlist = attModel.first.list;
     for (var model in firstlist!) {
       print(model.title);
@@ -137,7 +160,6 @@ class ProductdetailController extends GetxController {
   _loadData() async {
     var response = await httpClient
         .get("api/pcontent", arguments: {"id": "${Get.arguments["cid"]}"});
-    print(response.data);
     item.value = PcontentModel.fromJson(response.data).result!;
     attModel.addAll(item.value.attr!);
     update();

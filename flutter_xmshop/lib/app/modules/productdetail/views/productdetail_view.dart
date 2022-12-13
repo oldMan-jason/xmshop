@@ -162,28 +162,25 @@ class ProductdetailView extends GetView<ProductdetailController> {
       color: Colors.white,
       height: 64,
       child: Row(
-        children: [
-          Expanded(
-              flex: 1,
-              child: Text(
-                "商品介绍",
+        children: controller.subTabsList.map((e) {
+          return Expanded(
+            flex: 1,
+            child: InkWell(onTap: () {
+              controller.changeSubTabsIndex(e["id"]);
+            }, child: Obx(() {
+              return Text(
+                e["title"],
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 17,
-                    color: Colors.red,
+                    color: e["id"] == controller.selectSubTabsIndex.value
+                        ? Colors.red
+                        : Colors.black,
                     fontWeight: FontWeight.bold),
-              )),
-          Expanded(
-              flex: 1,
-              child: Text(
-                "规格参数",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 17,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ))
-        ],
+              );
+            })),
+          );
+        }).toList(),
       ),
     );
   }

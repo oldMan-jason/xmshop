@@ -1,3 +1,5 @@
 globalKey.currentState 可以获取子组件的状态，执行子组件的方法，
 globalKey.currentWidget 可以获取子组件的属性，
 globalKey.currentContext!.findRenderObject()可以获取渲染的属性。
+
+InkWell包裹Expanded组件，子组件的布局会出现错乱！

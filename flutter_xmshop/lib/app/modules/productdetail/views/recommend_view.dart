@@ -12,7 +12,7 @@ class RecommendView extends GetView {
       key: controller.globalKey3,
       width: double.infinity,
       height: 1000,
-      color: Colors.blue,
+      color: Colors.pink,
     );
   }
 }
