@@ -83,9 +83,6 @@ class AvailabView extends GetView {
                   ),
                   Chip(
                     label: Text("黑色"),
-                    deleteIcon: Icon(Icons.arrow_drop_down),
-                    deleteIconColor: Colors.grey,
-                    onDeleted: () {},
                   ),
                   RichText(
                       text: TextSpan(children: [

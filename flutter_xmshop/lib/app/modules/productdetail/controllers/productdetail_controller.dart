@@ -18,6 +18,10 @@ class ProductdetailController extends GetxController {
   RxList<PcontentAttrModel> attModel = <PcontentAttrModel>[].obs;
   RxInt selectId = 1.obs;
 
+  // 已选择的机型
+  RxString choiceTypeValue = "".obs;
+  RxInt buyNumber = 1.obs;
+
   // 导航条透明度
   RxDouble op = 0.0.obs;
   //是否显示tabs
@@ -133,7 +137,6 @@ class ProductdetailController extends GetxController {
   updateSheetFlag1(title) {
     var firstlist = attModel.first.list;
     for (var model in firstlist!) {
-      print(model.title);
       if (model.title == title) {
         model.choose = true;
       } else {
@@ -141,6 +144,7 @@ class ProductdetailController extends GetxController {
       }
     }
     update();
+    _combineChoiceValue();
   }
 
   updateSheetFlag2(title) {
@@ -154,6 +158,28 @@ class ProductdetailController extends GetxController {
       }
     }
     update();
+    _combineChoiceValue();
+  }
+
+  _combineChoiceValue() {
+    var temp = attModel.map((element) {
+      var result = element.list?.firstWhere((element) => element.choose);
+      return result!.title;
+    }).toList();
+    var val = temp.join(",");
+    choiceTypeValue.value = val;
+  }
+
+  incNumber() {
+    buyNumber.value++;
+    update();
+  }
+
+  decNumber() {
+    if (buyNumber.value > 1) {
+      buyNumber--;
+      update();
+    }
   }
 
   // 获取详情数据

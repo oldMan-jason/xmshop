@@ -159,7 +159,9 @@ class GoodsView extends GetView {
                                 TextButton(
                                   onPressed: _bottomSheet,
                                   child: Text(
-                                    "我是已选的结果饭卡发发火",
+                                    controller.choiceTypeValue.value.isNotEmpty
+                                        ? controller.choiceTypeValue.value
+                                        : "请选择",
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 16),
                                   ),
