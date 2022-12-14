@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_xmshop/app/tool/screenadapter.dart';
 import 'package:get/get.dart';
 import '../../../tool/httpclient.dart';
 import '../models/pcontent.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../cache/cartcache.dart';
 
 class ProductdetailController extends GetxController {
   GlobalKey globalKey1 = GlobalKey();
@@ -12,8 +11,9 @@ class ProductdetailController extends GetxController {
   GlobalKey globalKey3 = GlobalKey();
 
   late HttpClient httpClient = HttpClient();
-  // 自定义响应式model
+  // 商品详情的model
   var item = PcontentItemModel().obs;
+
   // bottomSheet
   RxList<PcontentAttrModel> attModel = <PcontentAttrModel>[].obs;
   RxInt selectId = 1.obs;
@@ -161,6 +161,7 @@ class ProductdetailController extends GetxController {
     _combineChoiceValue();
   }
 
+  // 组合选择的结果
   _combineChoiceValue() {
     var temp = attModel.map((element) {
       var result = element.list?.firstWhere((element) => element.choose);
@@ -170,11 +171,20 @@ class ProductdetailController extends GetxController {
     choiceTypeValue.value = val;
   }
 
+  // 缓存本地添加购物车数据
+  sureBuyAction() {
+    print("保存数据");
+    CartCacheTool.saveProduct(
+        item.value, choiceTypeValue.value, buyNumber.value);
+  }
+
+  // 购买数量的增加
   incNumber() {
     buyNumber.value++;
     update();
   }
 
+  // 购买数量的减少
   decNumber() {
     if (buyNumber.value > 1) {
       buyNumber--;
@@ -186,8 +196,10 @@ class ProductdetailController extends GetxController {
   _loadData() async {
     var response = await httpClient
         .get("api/pcontent", arguments: {"id": "${Get.arguments["cid"]}"});
-    item.value = PcontentModel.fromJson(response.data).result!;
-    attModel.addAll(item.value.attr!);
-    update();
+    if (response.data != null) {
+      item.value = PcontentModel.fromJson(response.data).result!;
+      attModel.addAll(item.value.attr!);
+      update();
+    }
   }
 }

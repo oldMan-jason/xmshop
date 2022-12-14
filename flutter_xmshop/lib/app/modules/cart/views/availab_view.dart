@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_xmshop/app/tool/httpclient.dart';
 import 'package:get/get.dart';
 import '../controllers/cart_controller.dart';
 
@@ -21,14 +22,22 @@ class AvailabView extends GetView {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                width: 20,
-                height: 20,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    border: Border.all(
-                        color: Color.fromARGB(255, 241, 231, 231), width: 2)),
+              InkWell(
+                onTap: () {
+                  print("商铺全选了");
+                  cartController.shopSelect();
+                },
+                child: Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: cartController.shopAllSelect.value
+                          ? Colors.black
+                          : Colors.white,
+                      border: Border.all(
+                          color: Color.fromARGB(255, 241, 231, 231), width: 2)),
+                ),
               ),
               SizedBox(
                 width: 10,
@@ -56,16 +65,20 @@ class AvailabView extends GetView {
   }
 
   // 单个添加的商品
-  Widget _product() {
+  Widget _product(val) {
     return Container(
       height: 150,
       width: double.infinity,
       color: Colors.white,
       child: Row(
         children: [
-          Radio(value: 0, groupValue: 1, onChanged: (val) {}),
-          Image.asset(
-            "assets/images/placeholder.png",
+          Checkbox(
+              value: val["checked"],
+              onChanged: (boxVal) {
+                cartController.selectProduct(val["_id"]);
+              }),
+          Image.network(
+            HttpClient.replacePicUrl(val["pic"]),
             fit: BoxFit.contain,
             width: 80,
             height: 80,
@@ -78,11 +91,11 @@ class AvailabView extends GetView {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "蓝牙手机支架八兆的少的",
+                    val["title"],
                     style: TextStyle(fontSize: 18, color: Colors.black87),
                   ),
                   Chip(
-                    label: Text("黑色"),
+                    label: Text(val["selectedAttr"]),
                   ),
                   RichText(
                       text: TextSpan(children: [
@@ -90,7 +103,7 @@ class AvailabView extends GetView {
                         text: "￥",
                         style: TextStyle(color: Colors.red, fontSize: 12)),
                     TextSpan(
-                        text: "89",
+                        text: "${val["price"]}",
                         style: TextStyle(color: Colors.red, fontSize: 18))
                   ])),
                   SizedBox(
@@ -98,7 +111,7 @@ class AvailabView extends GetView {
                   ),
                   Container(
                     padding: EdgeInsets.all(5),
-                    child: Text("预估到手价￥89.00"),
+                    child: Text("预估到手价${val["price"]}"),
                     decoration: BoxDecoration(
                         color: Colors.red[50],
                         borderRadius: BorderRadius.circular(20)),
@@ -113,7 +126,7 @@ class AvailabView extends GetView {
   }
 
   // 迭代器
-  Widget _stepCount() {
+  Widget _stepCount(val) {
     return Container(
       width: 80,
       height: 20,
@@ -131,7 +144,9 @@ class AvailabView extends GetView {
             child: TextButton(
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all(EdgeInsets.all(0))),
-                onPressed: () {},
+                onPressed: () {
+                  cartController.removeProduct(val["_id"]);
+                },
                 child: Text(
                   "-",
                   style: TextStyle(fontSize: 14, color: Colors.black),
@@ -150,7 +165,7 @@ class AvailabView extends GetView {
                     padding: MaterialStateProperty.all(EdgeInsets.all(0))),
                 onPressed: () {},
                 child: Text(
-                  "1",
+                  "${val["count"]}",
                   style: TextStyle(fontSize: 14, color: Colors.black),
                 )),
           ),
@@ -165,7 +180,9 @@ class AvailabView extends GetView {
             child: TextButton(
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all(EdgeInsets.all(0))),
-                onPressed: () {},
+                onPressed: () {
+                  cartController.addProduct(val["_id"]);
+                },
                 child: Text(
                   "+",
                   style: TextStyle(fontSize: 14, color: Colors.black),
@@ -189,27 +206,18 @@ class AvailabView extends GetView {
       ),
       child: Column(
         children: [
-          // 标题
           _section1(),
-          Stack(
-            children: [
-              _product(),
-              Positioned(right: 10, bottom: 20, child: _stepCount())
-            ],
-          ),
-
-          Stack(
-            children: [
-              _product(),
-              Positioned(right: 10, bottom: 20, child: _stepCount())
-            ],
-          ),
-          Stack(
-            children: [
-              _product(),
-              Positioned(right: 10, bottom: 20, child: _stepCount())
-            ],
-          )
+          // 标题
+          ...cartController.cacheList.map(
+            (e) {
+              return Stack(
+                children: [
+                  _product(e),
+                  Positioned(right: 10, bottom: 20, child: _stepCount(e))
+                ],
+              );
+            },
+          ).toList(),
         ],
       ),
     );

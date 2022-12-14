@@ -3,3 +3,12 @@ globalKey.currentWidget 可以获取子组件的属性，
 globalKey.currentContext!.findRenderObject()可以获取渲染的属性。
 
 InkWell包裹Expanded组件，子组件的布局会出现错乱！
+
+当前页面实时刷新
+GetBuilder<CartController>(
+            init: controller,
+            initState: (state) {
+              print("view每次出现都会执行");
+              
+            },
+            builder: ((controller) {}

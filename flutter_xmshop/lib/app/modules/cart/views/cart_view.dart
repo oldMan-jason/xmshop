@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/cart_controller.dart';
 import './availab_view.dart';
-import './invalid_view.dart';
 
 class CartView extends GetView<CartController> {
   const CartView({Key? key}) : super(key: key);
@@ -21,26 +20,35 @@ class CartView extends GetView<CartController> {
         margin: EdgeInsets.all(0),
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
         color: Colors.grey[200],
-        child: Stack(
-          children: [
-            ListView(
-              children: [
-                AvailabView(),
-                SizedBox(
-                  height: 20,
-                ),
-                InvalidView()
-              ],
-            ),
-            BottomActionView(),
-          ],
-        ),
+        child: GetBuilder<CartController>(
+            init: controller,
+            initState: (state) {
+              print("执行了一次");
+              controller.getAddCartData();
+            },
+            builder: ((controller) {
+              print("update执行了一次");
+              return controller.cacheList.isNotEmpty
+                  ? Stack(
+                      children: [
+                        ListView(
+                          children: [
+                            AvailabView(),
+                          ],
+                        ),
+                        BottomActionView(),
+                      ],
+                    )
+                  : Container();
+            })),
       ),
     );
   }
 }
 
 class BottomActionView extends GetView {
+  // 组件绑定vc
+  final CartController cartController = Get.find<CartController>();
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -59,8 +67,12 @@ class BottomActionView extends GetView {
                       child: Row(
                         children: [
                           IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.circle_outlined)),
+                              onPressed: () {
+                                cartController.shopSelect();
+                              },
+                              icon: cartController.shopAllSelect.value
+                                  ? Icon(Icons.circle_rounded)
+                                  : Icon(Icons.circle_outlined)),
                           Text(
                             "全选",
                             style: TextStyle(
@@ -76,7 +88,7 @@ class BottomActionView extends GetView {
                       alignment: Alignment.centerRight,
                       child: Column(
                         children: [
-                          Text("合计(不含运费) ￥98元"),
+                          Text("合计(不含运费) ￥${cartController.getTotalPrice()}"),
                           Text("免运费 优惠 ￥0.01 "),
                         ],
                       ),
@@ -105,7 +117,8 @@ class BottomActionView extends GetView {
                                 MaterialStateProperty.all(Colors.orange),
                           ),
                           onPressed: () {},
-                          child: Text("结算(2)"),
+                          child:
+                              Text("结算(${cartController.getTotalProduct()})"),
                         ))),
               ],
             )));

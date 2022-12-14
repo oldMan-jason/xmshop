@@ -232,6 +232,7 @@ class GoodsheetView extends GetView {
                             MaterialStateProperty.all(Colors.white),
                       ),
                       onPressed: () {
+                        p.sureBuyAction();
                         Get.back();
                       },
                       child: Text("确定")),
