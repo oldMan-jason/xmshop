@@ -12,3 +12,11 @@ GetBuilder<CartController>(
               
             },
             builder: ((controller) {}
+
+TextField操作
+//聚焦下一个TextField
+Focus.of(context).nextFocus();
+//聚焦上一个TextField
+Focus.of(context).previousFocus();
+//结束编辑，收起键盘
+Focus.of(context).requestFocus(FocusNode());

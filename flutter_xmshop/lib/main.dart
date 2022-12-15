@@ -19,8 +19,14 @@ void main() {
       splitScreenMode: true,
       builder: (context, child) {
         return GetMaterialApp(
-          // 设置主题颜色
-          theme: ThemeData(primarySwatch: Colors.grey),
+          // 设置主题颜色、去除按钮点击的波纹效果
+          theme: ThemeData(
+            primarySwatch: Colors.grey,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            splashFactory: NoSplash.splashFactory,
+          ),
+
           //配置ios动画
           defaultTransition: Transition.rightToLeft,
           debugShowCheckedModeBanner: false,

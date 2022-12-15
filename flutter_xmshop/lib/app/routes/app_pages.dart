@@ -1,5 +1,11 @@
 import 'package:get/get.dart';
 
+import '../modules/login/code/bindings/code_binding.dart';
+import '../modules/login/code/views/code_view.dart';
+import '../modules/login/register/bindings/register_binding.dart';
+import '../modules/login/register/views/register_view.dart';
+import '../modules/login/signin/bindings/signin_binding.dart';
+import '../modules/login/signin/views/signin_view.dart';
 import '../modules/productdetail/bindings/productdetail_binding.dart';
 import '../modules/productdetail/views/productdetail_view.dart';
 import '../modules/productlist/bindings/productlist_binding.dart';
@@ -36,6 +42,21 @@ class AppPages {
       name: _Paths.PRODUCTDETAIL,
       page: () => const ProductdetailView(),
       binding: ProductdetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.SIGNIN,
+      page: () => const SigninView(),
+      binding: SigninBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTER,
+      page: () => const RegisterView(),
+      binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: _Paths.CODE,
+      page: () => const CodeView(),
+      binding: CodeBinding(),
     ),
   ];
 }

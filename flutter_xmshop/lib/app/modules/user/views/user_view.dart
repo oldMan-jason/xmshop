@@ -107,7 +107,9 @@ class UserView extends GetView<UserController> {
                   ),
                 ),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed("/signin");
+                    },
                     child: Text(
                       "登录/注册",
                       style: TextStyle(fontSize: 20, color: Colors.black87),
