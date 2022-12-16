@@ -58,7 +58,8 @@ class RegisterView extends GetView<RegisterController> {
             ),
             InkWell(
               onTap: () {
-                Get.toNamed("/code");
+                Get.toNamed("/code",
+                    arguments: {"mobile": "158****6398", "title": "手机号快速注册"});
               },
               child: Container(
                 height: 54,

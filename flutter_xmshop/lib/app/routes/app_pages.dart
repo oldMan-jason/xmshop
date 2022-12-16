@@ -56,6 +56,7 @@ class AppPages {
     GetPage(
       name: _Paths.CODE,
       page: () => const CodeView(),
+      parameters: {},
       binding: CodeBinding(),
     ),
   ];

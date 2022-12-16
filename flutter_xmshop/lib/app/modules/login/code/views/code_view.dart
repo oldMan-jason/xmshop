@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../controllers/code_controller.dart';
 
 class CodeView extends GetView<CodeController> {
   const CodeView({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    print(Get.parameters);
+    print(Get.arguments);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text('手机号快速登录'),
+        title: Text('${Get.arguments["title"]}'),
         centerTitle: true,
       ),
       body: Column(
@@ -33,7 +33,7 @@ class CodeView extends GetView<CodeController> {
                 text: "已发送至",
                 style: TextStyle(fontSize: 13, color: Colors.black38)),
             TextSpan(
-                text: "+86 158****6398",
+                text: "+86 ${Get.arguments["mobile"]}",
                 style: TextStyle(fontSize: 13, color: Colors.black)),
           ])),
           SizedBox(
@@ -56,11 +56,11 @@ class CodeView extends GetView<CodeController> {
                 activeFillColor: Colors.white,
               ),
               animationDuration: Duration(milliseconds: 300),
-              backgroundColor: Colors.blue.shade50,
+              backgroundColor: Colors.white,
               enableActiveFill: true,
               controller: controller.textEditingController,
               onCompleted: (v) {
-                print("Completed");
+                print("${controller.textEditingController.text}");
               },
               onChanged: (value) {
                 print(value);

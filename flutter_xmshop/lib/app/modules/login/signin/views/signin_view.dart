@@ -100,7 +100,8 @@ class SigninView extends GetView<SigninController> {
           // 获取验证码
           InkWell(
             onTap: () {
-              Get.toNamed("/code");
+              Get.toNamed("/code",
+                  arguments: {"mobile": "158****6398", "title": "手机号快速登录"});
             },
             child: Container(
               margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
