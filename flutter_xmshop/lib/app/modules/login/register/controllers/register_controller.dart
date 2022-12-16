@@ -1,23 +1,22 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../tool/httpclient.dart';
 
 class RegisterController extends GetxController {
-  //TODO: Implement RegisterController
+  final HttpClient httpClient = HttpClient();
+  final TextEditingController textEditingController = TextEditingController();
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  // 获取验证码
+  Future<Map?> loadCode(String tel) async {
+    var response = await httpClient.post("api/sendCode", data: {"tel": tel});
+    if (response.data != null) {
+      return response.data;
+    }
+    return null;
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

@@ -1,23 +1,18 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../tool/httpclient.dart';
 
 class SigninController extends GetxController {
-  //TODO: Implement SigninController
+  final HttpClient httpClient = HttpClient();
+  final TextEditingController textEditingController = TextEditingController();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  // 获取验证码
+  Future<Map?> loadCode(String tel) async {
+    var response =
+        await httpClient.post("api/sendLoginCode", data: {"tel": tel});
+    if (response.data != null) {
+      return response.data;
+    }
+    return null;
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

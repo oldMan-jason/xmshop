@@ -57,6 +57,7 @@ class SigninView extends GetView<SigninController> {
                   width: 300,
                   alignment: Alignment.center,
                   child: TextField(
+                    controller: controller.textEditingController,
                     scrollPhysics: ScrollPhysics(),
                     decoration: InputDecoration(
                         constraints: BoxConstraints(),
@@ -87,7 +88,7 @@ class SigninView extends GetView<SigninController> {
               Container(
                 width: ScreenAdpater.getScreenWidth() - 70,
                 child: Text(
-                  "已经月底的改好地方卡号番窠倒臼啊哈改好地方卡号番窠倒臼啊哈飞",
+                  "阅读商城用户协议、商城用户隐私协议",
                   softWrap: true,
                   overflow: TextOverflow.clip,
                 ),
@@ -99,9 +100,28 @@ class SigninView extends GetView<SigninController> {
           ),
           // 获取验证码
           InkWell(
-            onTap: () {
-              Get.toNamed("/code",
-                  arguments: {"mobile": "158****6398", "title": "手机号快速登录"});
+            onTap: () async {
+              if (GetUtils.isPhoneNumber(
+                      controller.textEditingController.text) &&
+                  controller.textEditingController.text.length == 11) {
+                var phone = controller.textEditingController.text;
+                // 收起键盘
+                FocusScope.of(context).requestFocus(FocusNode());
+                Map? data = await controller.loadCode(phone);
+                if (data != null) {
+                  Get.snackbar("提示", data["message"]);
+                  Get.toNamed("/code", arguments: {
+                    "mobile": phone,
+                    "title": "手机号快速登录",
+                    "code": data["code"],
+                    "sourcetype": 1
+                  });
+                } else {
+                  Get.snackbar("提示", "获取失败！");
+                }
+              } else {
+                Get.snackbar("提示", "手机号有误！");
+              }
             },
             child: Container(
               margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
@@ -114,6 +134,29 @@ class SigninView extends GetView<SigninController> {
                 "获取验证码",
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
+            ),
+          ),
+
+          Container(
+            padding: EdgeInsets.all(15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                    onPressed: () {
+                      Get.toNamed("/register");
+                    },
+                    child: Text(
+                      "新用户注册",
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    )),
+                TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "账户密码登录",
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    )),
+              ],
             ),
           )
         ],

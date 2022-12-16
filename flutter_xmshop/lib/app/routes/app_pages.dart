@@ -4,6 +4,8 @@ import '../modules/login/code/bindings/code_binding.dart';
 import '../modules/login/code/views/code_view.dart';
 import '../modules/login/register/bindings/register_binding.dart';
 import '../modules/login/register/views/register_view.dart';
+import '../modules/login/registeroff/bindings/registeroff_binding.dart';
+import '../modules/login/registeroff/views/registeroff_view.dart';
 import '../modules/login/signin/bindings/signin_binding.dart';
 import '../modules/login/signin/views/signin_view.dart';
 import '../modules/productdetail/bindings/productdetail_binding.dart';
@@ -58,6 +60,11 @@ class AppPages {
       page: () => const CodeView(),
       parameters: {},
       binding: CodeBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTEROFF,
+      page: () => const RegisteroffView(),
+      binding: RegisteroffBinding(),
     ),
   ];
 }

@@ -16,9 +16,17 @@ class HttpClient {
   // Get方法
   Future<Response> get(String api, {Map<String, dynamic>? arguments}) async {
     String url = HttpClient.domin + api;
-    print("请求url -- ${url} \n 参数 --- ${arguments}");
+    print("Get请求url -- ${url} \n 参数 --- ${arguments}");
     var response = await HttpClient.dio.get(url, queryParameters: arguments);
-    print("响应数据 --- ${response.data}");
+    print("Get响应数据 --- ${response.data}");
+    return response;
+  }
+
+  Future<Response> post(String api, {Map? data}) async {
+    String url = HttpClient.domin + api;
+    print("Post请求url -- ${url} \n 参数 --- ${data}");
+    var response = await HttpClient.dio.post(url, data: data);
+    print("Post响应数据 --- ${response.data}");
     return response;
   }
 
