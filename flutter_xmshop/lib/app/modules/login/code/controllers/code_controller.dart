@@ -7,9 +7,11 @@ import 'package:get/get.dart';
 
 import '../../../../tool/cachetool.dart';
 import '../../../../tool/userinfo.dart';
+import '../../../user/controllers/user_controller.dart';
 
 class CodeController extends GetxController {
   final TextEditingController textEditingController = TextEditingController();
+  final UserController userController = Get.find<UserController>();
   final HttpClient httpClient = HttpClient();
   RxInt count = 10.obs;
   var tel = Get.arguments["mobile"];
@@ -22,6 +24,15 @@ class CodeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    userController.getuserInfo();
+    if (timer != null && timer!.isActive) {
+      timer?.cancel();
+    }
+    super.onClose();
   }
 
   startTimer() {
@@ -41,11 +52,6 @@ class CodeController extends GetxController {
     isloginSource ? loadLoginCode : loadCode();
   }
 
-  @override
-  void onClose() {
-    timer?.cancel();
-  }
-
   Future<MessageInfo> validateCode() async {
     var response = await httpClient
         .post("api/validateCode", data: {"tel": tel, "code": code});
@@ -63,6 +69,7 @@ class CodeController extends GetxController {
     return null;
   }
 
+  // 获取登录验证码
   loadLoginCode() async {
     var response =
         await httpClient.post("api/sendLoginCode", data: {"tel": tel});
@@ -77,7 +84,7 @@ class CodeController extends GetxController {
     var response = await httpClient
         .post("api/validateLoginCode", data: {"tel": tel, "code": code});
     if (response.data != null) {
-      CacheTool.saveObject("userInfoKey", response.data["userinfo"]);
+      await CacheTool.saveObject("userInfoKey", response.data["userinfo"]);
     }
     return MessageInfo(response.data["message"], response.data["success"]);
   }

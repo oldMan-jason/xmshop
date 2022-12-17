@@ -98,7 +98,8 @@ class RegisteroffView extends GetView<RegisteroffController> {
                   MessageInfo messageInfo = await controller.completeRegister(
                       controller.passtextEditingController.text);
                   if (messageInfo.states) {
-                    Get.offAllNamed("/tabs");
+                    // Get.offAllNamed("/tabs");
+                    Get.back();
                   } else {
                     Get.snackbar("提示", "注册失败");
                   }

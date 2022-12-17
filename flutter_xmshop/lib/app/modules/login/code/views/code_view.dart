@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -11,16 +14,17 @@ class CodeView extends GetView<CodeController> {
   void jumpToRegisterOff() {
     if (controller.isloginSource) {
       // 验证码登录
-      Get.offAllNamed("/tabs");
+      Get.back();
     } else {
       //注册获取验证码
-      Get.toNamed("/registeroff",
+      Get.offAndToNamed("/registeroff",
           arguments: {"tel": controller.tel, "code": controller.code});
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    print("code 验证码 --- ");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -89,10 +93,10 @@ class CodeView extends GetView<CodeController> {
                 MessageInfo messageInfo = controller.isloginSource
                     ? await controller.validateLoginCode()
                     : await controller.validateCode();
+
                 if (!messageInfo.states) {
                   Get.snackbar("提示信息!", "验证码输入错误");
                 } else {
-                  Get.snackbar("提示信息!", "验证码验证成功");
                   jumpToRegisterOff();
                 }
               },
@@ -143,17 +147,17 @@ class CodeView extends GetView<CodeController> {
                 borderRadius: BorderRadius.circular(20)),
             child: TextButton(
                 onPressed: () async {
-                  MessageInfo messageInfo = await controller.isloginSource
-                      ? controller.validateLoginCode()
-                      : controller.validateCode();
+                  // 隐藏键盘
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  MessageInfo messageInfo = controller.isloginSource
+                      ? await controller.validateLoginCode()
+                      : await controller.validateCode();
                   if (!messageInfo.states) {
                     Get.snackbar("提示信息!", "验证码输入错误");
                   } else {
                     Get.snackbar("提示信息!", "验证成功");
                     jumpToRegisterOff();
                   }
-                  // 收起键盘
-                  FocusScope.of(context).requestFocus(FocusNode());
                 },
                 child: Text(
                   "验证",

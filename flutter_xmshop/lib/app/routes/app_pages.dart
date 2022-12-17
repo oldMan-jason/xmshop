@@ -8,6 +8,8 @@ import '../modules/login/registeroff/bindings/registeroff_binding.dart';
 import '../modules/login/registeroff/views/registeroff_view.dart';
 import '../modules/login/signin/bindings/signin_binding.dart';
 import '../modules/login/signin/views/signin_view.dart';
+import '../modules/order/bindings/order_binding.dart';
+import '../modules/order/views/order_view.dart';
 import '../modules/productdetail/bindings/productdetail_binding.dart';
 import '../modules/productdetail/views/productdetail_view.dart';
 import '../modules/productlist/bindings/productlist_binding.dart';
@@ -65,6 +67,11 @@ class AppPages {
       name: _Paths.REGISTEROFF,
       page: () => const RegisteroffView(),
       binding: RegisteroffBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER,
+      page: () => const OrderView(),
+      binding: OrderBinding(),
     ),
   ];
 }

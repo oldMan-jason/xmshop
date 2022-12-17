@@ -70,8 +70,7 @@ class RegisterView extends GetView<RegisterController> {
                   FocusScope.of(context).requestFocus(FocusNode());
                   Map? data = await controller.loadCode(phone);
                   if (data != null) {
-                    Get.snackbar("提示", data["message"]);
-                    Get.toNamed("/code", arguments: {
+                    Get.offAndToNamed("/code", arguments: {
                       "mobile": phone,
                       "title": "手机号快速注册",
                       "code": data["code"]

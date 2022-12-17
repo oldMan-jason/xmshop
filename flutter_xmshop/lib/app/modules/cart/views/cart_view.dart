@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_xmshop/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import '../controllers/cart_controller.dart';
 import './availab_view.dart';
@@ -23,11 +24,9 @@ class CartView extends GetView<CartController> {
         child: GetBuilder<CartController>(
             init: controller,
             initState: (state) {
-              print("执行了一次");
               controller.getAddCartData();
             },
             builder: ((controller) {
-              print("update执行了一次");
               return controller.cacheList.isNotEmpty
                   ? Stack(
                       children: [
@@ -103,8 +102,6 @@ class BottomActionView extends GetView {
                         child: TextButton(
                           style: ButtonStyle(
                             fixedSize: MaterialStateProperty.all(Size(100, 60)),
-                            // padding:
-                            // MaterialStateProperty.all(EdgeInsets.all(10)),
                             shape: MaterialStateProperty.all(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12))),
@@ -116,7 +113,9 @@ class BottomActionView extends GetView {
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.orange),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(Routes.ORDER);
+                          },
                           child:
                               Text("结算(${cartController.getTotalProduct()})"),
                         ))),

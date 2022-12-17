@@ -11,6 +11,7 @@ abstract class Routes {
   static const REGISTER = _Paths.REGISTER;
   static const CODE = _Paths.CODE;
   static const REGISTEROFF = _Paths.REGISTEROFF;
+  static const ORDER = _Paths.ORDER;
 }
 
 abstract class _Paths {
@@ -23,4 +24,5 @@ abstract class _Paths {
   static const REGISTER = '/register';
   static const CODE = '/code';
   static const REGISTEROFF = '/registeroff';
+  static const ORDER = '/order';
 }

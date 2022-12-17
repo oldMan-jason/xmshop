@@ -3,8 +3,10 @@ import 'package:flutter_xmshop/app/tool/httpclient.dart';
 import 'package:flutter_xmshop/app/tool/userinfo.dart';
 import 'package:get/get.dart';
 import '../../../../tool/cachetool.dart';
+import '../../../user/controllers/user_controller.dart';
 
 class RegisteroffController extends GetxController {
+  final UserController userController = Get.find<UserController>();
   final HttpClient httpClient = HttpClient();
   final TextEditingController passtextEditingController =
       TextEditingController();
@@ -17,6 +19,12 @@ class RegisteroffController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    userController.getuserInfo();
+    super.onClose();
   }
 
   // 完成注册
