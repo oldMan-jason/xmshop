@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_xmshop/app/routes/app_pages.dart';
 import 'package:flutter_xmshop/app/tool/httpclient.dart';
 import 'package:get/get.dart';
 import '../controllers/order_controller.dart';
@@ -10,7 +11,7 @@ class OrderView extends GetView<OrderController> {
   Widget _addNewAddress() {
     return InkWell(
       onTap: () {
-        print("添加地址");
+        Get.toNamed(Routes.ADRESSLIST);
       },
       child: Container(
         margin: EdgeInsets.all(15),

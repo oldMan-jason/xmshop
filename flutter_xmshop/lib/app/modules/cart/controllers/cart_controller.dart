@@ -1,3 +1,4 @@
+import 'package:flutter_xmshop/app/tool/cachetool.dart';
 import 'package:get/get.dart';
 import '../../productdetail/cache/cartcache.dart';
 
@@ -10,6 +11,7 @@ class CartController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // CacheTool.clear("cartKey");
   }
 
   // 选择某一个商店全选或者全不选

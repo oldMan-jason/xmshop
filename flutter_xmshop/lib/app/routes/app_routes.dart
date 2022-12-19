@@ -13,6 +13,8 @@ abstract class Routes {
   static const CODE = _Paths.CODE;
   static const REGISTEROFF = _Paths.REGISTEROFF;
   static const ORDER = _Paths.ORDER;
+  static const ADRESSLIST = _Paths.ADRESSLIST;
+  static const ADRESSEDIT = _Paths.ADRESSEDIT;
 }
 
 abstract class _Paths {
@@ -27,4 +29,6 @@ abstract class _Paths {
   static const CODE = '/code';
   static const REGISTEROFF = '/registeroff';
   static const ORDER = '/order';
+  static const ADRESSLIST = '/adresslist';
+  static const ADRESSEDIT = '/adressedit';
 }

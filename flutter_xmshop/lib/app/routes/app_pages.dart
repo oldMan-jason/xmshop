@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 
+import '../modules/adress/adressedit/bindings/adressedit_binding.dart';
+import '../modules/adress/adresslist/bindings/adresslist_binding.dart';
+import '../modules/adress/adresslist/views/adresslist_view.dart';
+import '../modules/adress/adressedit/views/adressedit_view.dart';
 import '../modules/login/code/bindings/code_binding.dart';
 import '../modules/login/code/views/code_view.dart';
 import '../modules/login/register/bindings/register_binding.dart';
@@ -24,7 +28,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.TABS;
+  static const INITIAL = Routes.ADRESSLIST;
 
   static final routes = [
     GetPage(
@@ -76,6 +80,16 @@ class AppPages {
       name: _Paths.ORDER,
       page: () => const OrderView(),
       binding: OrderBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADRESSLIST,
+      page: () => const AdresslistView(),
+      binding: AdresslistBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADRESSEDIT,
+      page: () => const AdresseditView(),
+      binding: AdresseditBinding(),
     ),
   ];
 }
