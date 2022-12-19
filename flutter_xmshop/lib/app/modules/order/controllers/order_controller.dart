@@ -1,9 +1,11 @@
+import 'package:flutter_xmshop/app/modules/adress/adressedit/models/address_model.dart';
 import 'package:get/get.dart';
 
 import '../../productdetail/cache/cartcache.dart';
 
 class OrderController extends GetxController {
   RxList product = [].obs;
+  Rx<AddressModel> address = AddressModel().obs;
 
   @override
   void onInit() {
@@ -44,5 +46,10 @@ class OrderController extends GetxController {
       });
     }
     return totalCount;
+  }
+
+  insertAddress(AddressModel data) {
+    address.value = data;
+    update();
   }
 }

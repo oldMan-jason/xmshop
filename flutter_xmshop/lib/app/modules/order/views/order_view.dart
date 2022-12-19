@@ -54,6 +54,36 @@ class OrderView extends GetView<OrderController> {
     );
   }
 
+  Widget _address() {
+    return Container(
+      height: 80,
+      margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14), color: Colors.white),
+      child: ListTile(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              controller.address.value.address!,
+              style: TextStyle(
+                  color: Color.fromARGB(255, 131, 120, 120), fontSize: 13),
+            ),
+            Text(
+              controller.address.value.detail!,
+              style: TextStyle(color: Colors.black, fontSize: 17),
+            ),
+            Text(
+              "${controller.address.value.name!} + ${controller.address.value.tel!}",
+              style: TextStyle(color: Colors.grey, fontSize: 15),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 // 购买的商品
   List<Widget> _payProduct() {
     return controller.product.map((e) {
@@ -184,6 +214,13 @@ class OrderView extends GetView<OrderController> {
             ListView(
               children: [
                 _addNewAddress(),
+                Obx(() {
+                  return controller.address.value.name != null
+                      ? _address()
+                      : SizedBox(
+                          height: 0,
+                        );
+                }),
                 ..._payProduct(),
                 _otherInfo(),
               ],

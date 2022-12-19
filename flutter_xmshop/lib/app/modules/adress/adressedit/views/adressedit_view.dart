@@ -5,6 +5,7 @@ import 'package:city_pickers/city_pickers.dart';
 
 class AdresseditView extends GetView<AdresseditController> {
   const AdresseditView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -209,7 +210,10 @@ class AdresseditView extends GetView<AdresseditController> {
                   child: InkWell(
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      controller.saveAddress();
+                      controller.model != null
+                          ? controller.updateAddress()
+                          : controller.saveAddress();
+
                       Future.delayed(
                         Duration(milliseconds: 600),
                       ).whenComplete(() {
@@ -222,7 +226,7 @@ class AdresseditView extends GetView<AdresseditController> {
                       alignment: Alignment.center,
                       color: Colors.orange,
                       child: Text(
-                        "保存并使用",
+                        controller.model != null ? "更新并使用" : "保存并使用",
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                     ),

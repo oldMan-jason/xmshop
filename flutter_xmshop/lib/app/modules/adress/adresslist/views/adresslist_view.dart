@@ -31,33 +31,59 @@ class AdresslistView extends GetView<AdresslistController> {
                     ...controller.adList.map((element) {
                       return Column(
                         children: [
-                          ListTile(
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "${element.address}",
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 131, 120, 120),
-                                      fontSize: 13),
-                                ),
-                                Text(
-                                  "${element.detail}",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 17),
-                                ),
-                                Text(
-                                  "${element.name} ${element.tel}",
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 15),
-                                ),
-                              ],
+                          InkWell(
+                            onTap: () {
+                              print(element.toJson());
+                              // 选了当前地址'
+                              controller.sureAddress(element);
+                              Get.back();
+                            },
+                            onLongPress: () {
+                              Get.defaultDialog(
+                                  title: "提示信息!",
+                                  middleText: "您确定要删除吗?",
+                                  confirm: ElevatedButton(
+                                      onPressed: () {
+                                        controller.deleteData(element);
+                                        Get.back();
+                                      },
+                                      child: const Text("确定")),
+                                  cancel: ElevatedButton(
+                                      onPressed: () {
+                                        Get.back();
+                                      },
+                                      child: const Text("取消")));
+                            },
+                            child: ListTile(
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${element.address}",
+                                    style: TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 131, 120, 120),
+                                        fontSize: 13),
+                                  ),
+                                  Text(
+                                    "${element.detail}",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 17),
+                                  ),
+                                  Text(
+                                    "${element.name} ${element.tel}",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 15),
+                                  ),
+                                ],
+                              ),
+                              trailing: IconButton(
+                                  onPressed: () {
+                                    Get.toNamed(Routes.ADRESSEDIT,
+                                        arguments: element);
+                                  },
+                                  icon: Icon(Icons.edit)),
                             ),
-                            trailing: IconButton(
-                                onPressed: () {
-                                  Get.toNamed(Routes.ADRESSEDIT);
-                                },
-                                icon: Icon(Icons.edit)),
                           ),
                           Divider()
                         ],
