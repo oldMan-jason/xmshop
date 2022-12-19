@@ -3,9 +3,14 @@ import 'package:flutter_xmshop/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import '../controllers/cart_controller.dart';
 import './availab_view.dart';
+import '../../../tool/userinfo.dart';
 
 class CartView extends GetView<CartController> {
-  const CartView({Key? key}) : super(key: key);
+  CartView({Key? key}) : super(key: key);
+
+  // 注意CartView在多个地方调用了  需要手动获取CartController
+  final CartController controller = Get.put(CartController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,8 +118,13 @@ class BottomActionView extends GetView {
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.orange),
                           ),
-                          onPressed: () {
-                            Get.toNamed(Routes.ORDER);
+                          onPressed: () async {
+                            bool islogin = await UserInfo.getUserLoginState();
+                            if (islogin) {
+                              Get.toNamed(Routes.ORDER);
+                            } else {
+                              Get.toNamed(Routes.SIGNIN);
+                            }
                           },
                           child:
                               Text("结算(${cartController.getTotalProduct()})"),

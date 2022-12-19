@@ -18,7 +18,7 @@ import '../modules/search/bindings/search_binding.dart';
 import '../modules/search/views/search_view.dart';
 import '../modules/tabs/bindings/tabs_binding.dart';
 import '../modules/tabs/views/tabs_view.dart';
-
+import '../modules/cart/views/cart_view.dart';
 part 'app_routes.dart';
 
 class AppPages {
@@ -41,6 +41,10 @@ class AppPages {
       name: _Paths.SEARCH,
       page: () => const SearchView(),
       binding: SearchBinding(),
+    ),
+    GetPage(
+      name: _Paths.CART,
+      page: () => CartView(),
     ),
     GetPage(
       name: _Paths.PRODUCTDETAIL,

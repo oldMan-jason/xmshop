@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_xmshop/app/modules/cart/views/cart_view.dart';
+import 'package:flutter_xmshop/app/routes/app_pages.dart';
 import 'package:flutter_xmshop/app/tool/screenadapter.dart';
 import 'package:get/get.dart';
 import '../controllers/productdetail_controller.dart';
@@ -199,18 +201,23 @@ class ProductdetailView extends GetView<ProductdetailController> {
                       width: ScreenAdpater.width(2), color: Colors.black12))),
           child: Row(
             children: [
-              SizedBox(
-                width: ScreenAdpater.width(240),
-                height: ScreenAdpater.height(160),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.shopping_cart),
-                    Text(
-                      "购物车",
-                      style: TextStyle(fontSize: ScreenAdpater.fontSize(32)),
-                    )
-                  ],
+              InkWell(
+                onTap: () {
+                  Get.toNamed(Routes.CART);
+                },
+                child: SizedBox(
+                  width: ScreenAdpater.width(240),
+                  height: ScreenAdpater.height(160),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.shopping_cart),
+                      Text(
+                        "购物车",
+                        style: TextStyle(fontSize: ScreenAdpater.fontSize(32)),
+                      )
+                    ],
+                  ),
                 ),
               ),
               Expanded(

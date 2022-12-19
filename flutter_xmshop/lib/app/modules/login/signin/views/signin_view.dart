@@ -111,13 +111,6 @@ class SigninView extends GetView<SigninController> {
                 Map? data = await controller.loadCode(phone);
                 if (data != null) {
                   Get.snackbar("提示", data["message"]);
-                  // 普通跳转
-                  // Get.toNamed("/code", arguments: {
-                  //   "mobile": phone,
-                  //   "title": "手机号快速登录",
-                  //   "code": data["code"],
-                  //   "sourcetype": 1
-                  // });
                   // 使用替换路由
                   Get.offAndToNamed("/code", arguments: {
                     "mobile": phone,
