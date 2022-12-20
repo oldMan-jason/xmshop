@@ -42,7 +42,7 @@ class GoodsView extends GetView {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                            width: 240,
+                            width: 180,
                             padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,7 +195,7 @@ class GoodsView extends GetView {
                                   fontWeight: FontWeight.bold),
                             ),
                             Container(
-                              width: 300,
+                              width: 250,
                               child: Image.asset(
                                 "assets/images/service.png",
                                 fit: BoxFit.fitWidth,
